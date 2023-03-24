@@ -25,9 +25,16 @@ type TimeSpent struct {
 
 func (ts *TimeSpent) String() string {
 	s := ""
+	var intPart float64
+	var fracPart float64
 
 	if ts.Months > 0.0 {
-		s += fmt.Sprintf("%.1f month", ts.Months)
+		intPart, fracPart = math.Modf(ts.Months)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d month", int64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f month", ts.Months)
+		}
 		if ts.Months >= 2.0 {
 			s += "s"
 		}
@@ -36,7 +43,12 @@ func (ts *TimeSpent) String() string {
 		if s != "" {
 			s += " "
 		}
-		s += fmt.Sprintf("%.1f week", ts.Weeks)
+		intPart, fracPart = math.Modf(ts.Weeks)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d week", int64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f week", ts.Weeks)
+		}
 		if ts.Weeks >= 2.0 {
 			s += "s"
 		}
@@ -45,7 +57,12 @@ func (ts *TimeSpent) String() string {
 		if s != "" {
 			s += " "
 		}
-		s += fmt.Sprintf("%.1f day", ts.Days)
+		intPart, fracPart = math.Modf(ts.Days)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d day", uint64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f day", ts.Days)
+		}
 		if ts.Days >= 2.0 {
 			s += "s"
 		}
@@ -54,7 +71,12 @@ func (ts *TimeSpent) String() string {
 		if s != "" {
 			s += " "
 		}
-		s += fmt.Sprintf("%.1f hour", ts.Hours)
+		intPart, fracPart = math.Modf(ts.Hours)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d hour", uint64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f hour", ts.Hours)
+		}
 		if ts.Hours >= 2.0 {
 			s += "s"
 		}
@@ -63,7 +85,12 @@ func (ts *TimeSpent) String() string {
 		if s != "" {
 			s += " "
 		}
-		s += fmt.Sprintf("%.1f minute", ts.Minutes)
+		intPart, fracPart = math.Modf(ts.Minutes)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d minute", uint64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f minute", ts.Minutes)
+		}
 		if ts.Minutes >= 2.0 {
 			s += "s"
 		}

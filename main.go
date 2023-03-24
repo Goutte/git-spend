@@ -23,5 +23,5 @@ func main() {
 	ts.Normalize()
 
 	fmt.Printf(ts.String() + "\n")
-	fmt.Printf("%d minutes\n", ts.ToMinutes())
+	//fmt.Printf("%d minutes\n", ts.ToMinutes())
 }
