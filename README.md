@@ -37,16 +37,17 @@ Develop
 ```
     git clone https://github.com/Goutte/gitime.git
     cd gitime
-	go run gitime.go
+    go get
+	go run main.go
 ```
 
 
-Build
------
+Build & Run & Install
+---------------------
 
 ```
     make
-    ./gitime
+    build/gitime
 ```
 
 

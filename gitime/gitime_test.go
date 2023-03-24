@@ -1,6 +1,9 @@
-package main
+package gitime
 
-import "testing"
+import (
+	"main/gitime"
+	"testing"
+)
 
 func TestCollectTimeSpent(t *testing.T) {
 	type args struct {
@@ -131,7 +134,7 @@ I did good.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := CollectTimeSpent(tt.args.message).ToMinutes(); got != tt.want {
+			if got := gitime.CollectTimeSpent(tt.args.message).ToMinutes(); got != tt.want {
 				t.Errorf("CollectTimeSpent(%s) = %v, want %v", tt.args.message, got, tt.want)
 			}
 		})

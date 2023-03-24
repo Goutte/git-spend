@@ -1,55 +1,11 @@
-package main
+package gitime
 
 import (
 	"fmt"
-	"github.com/tsuyoshiwada/go-gitlog"
-	"log"
 	"regexp"
 	"strconv"
 	"strings"
 )
-
-/*
-
-Purpose
--------
-
-Collect, addition and return all the `/spend` and `/spent` time-tracking directives in git commit messages.
-
-This only looks at the `git log` of the currently checked out branch.
-
-
-Usage
------
-
-	go run gitime.go
-
-
-Dependencies
-------------
-
-	go get -u github.com/tsuyoshiwada/go-gitlog
-
-
-*/
-
-func main() {
-	git := gitlog.New(&gitlog.Config{})
-
-	commits, err := git.Log(nil, nil)
-	if err != nil {
-		log.Fatalln("Cannot read git log:", err)
-	}
-
-	ts := &TimeSpent{}
-	for _, commit := range commits {
-		ts.Add(CollectTimeSpent(commit.Subject))
-		ts.Add(CollectTimeSpent(commit.Body))
-	}
-
-	fmt.Printf(ts.String() + "\n")
-	fmt.Printf("%d minutes\n", ts.ToMinutes())
-}
 
 type TimeSpent struct {
 	Months  float64
