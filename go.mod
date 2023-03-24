@@ -1,4 +1,4 @@
-module main
+module github.com/goutte/gitime
 
 go 1.19
 

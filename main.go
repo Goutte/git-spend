@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/goutte/gitime/gitime"
 	"github.com/tsuyoshiwada/go-gitlog"
 	"log"
-	"main/gitime"
 )
 
 func main() {
