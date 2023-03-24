@@ -3,7 +3,7 @@
 run:
 	go run main.go
 
-build:
+build: $(shell find . -name \*.go)
 	go build -o build/gitime main.go
 
 test:
