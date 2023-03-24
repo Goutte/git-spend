@@ -20,6 +20,7 @@ func main() {
 		ts.Add(gitime.CollectTimeSpent(commit.Subject))
 		ts.Add(gitime.CollectTimeSpent(commit.Body))
 	}
+	ts.Normalize()
 
 	fmt.Printf(ts.String() + "\n")
 	fmt.Printf("%d minutes\n", ts.ToMinutes())

@@ -2,6 +2,17 @@ package gitime
 
 import (
 	"fmt"
+	"math"
+)
+
+const (
+	WeeksInOneMonth   = 4.0
+	DaysInOneWeek     = 5.0
+	HoursInOneDay     = 8.0
+	MinutesInOneHour  = 60.0
+	MinutesInOneDay   = MinutesInOneHour * HoursInOneDay
+	MinutesInOneWeek  = MinutesInOneHour * HoursInOneDay * DaysInOneWeek
+	MinutesInOneMonth = MinutesInOneHour * HoursInOneDay * DaysInOneWeek * WeeksInOneMonth
 )
 
 type TimeSpent struct {
@@ -62,12 +73,11 @@ func (ts *TimeSpent) String() string {
 }
 
 func (ts *TimeSpent) ToMinutes() uint64 {
-	minutes := 0.0
-	minutes += ts.Minutes
-	minutes += ts.Hours * 60.0
-	minutes += ts.Days * 8.0 * 60.0
-	minutes += ts.Weeks * 5.0 * 8.0 * 60.0
-	minutes += ts.Months * 4.0 * 5.0 * 8.0 * 60.0
+	minutes := ts.Minutes
+	minutes += ts.Hours * MinutesInOneHour
+	minutes += ts.Days * MinutesInOneDay
+	minutes += ts.Weeks * MinutesInOneWeek
+	minutes += ts.Months * MinutesInOneMonth
 
 	return uint64(minutes)
 }
@@ -78,6 +88,73 @@ func (ts *TimeSpent) Add(other *TimeSpent) *TimeSpent {
 	ts.Days += other.Days
 	ts.Hours += other.Hours
 	ts.Minutes += other.Minutes
+
+	return ts
+}
+
+func (ts *TimeSpent) Normalize() *TimeSpent {
+	return ts.normalizeFractions().normalizeModuli()
+}
+
+func (ts *TimeSpent) normalizeFractions() *TimeSpent {
+	var frac float64
+
+	_, frac = math.Modf(ts.Months)
+	if frac > 0.0 {
+		ts.Months -= frac
+		ts.Weeks += frac * WeeksInOneMonth
+	}
+
+	_, frac = math.Modf(ts.Weeks)
+	if frac > 0.0 {
+		ts.Weeks -= frac
+		ts.Days += frac * DaysInOneWeek
+	}
+
+	_, frac = math.Modf(ts.Days)
+	if frac > 0.0 {
+		ts.Days -= frac
+		ts.Hours += frac * HoursInOneDay
+	}
+
+	_, frac = math.Modf(ts.Hours)
+	if frac > 0.0 {
+		ts.Hours -= frac
+		ts.Minutes += frac * MinutesInOneHour
+	}
+
+	return ts
+}
+
+func (ts *TimeSpent) normalizeModuli() *TimeSpent {
+
+	if ts.Minutes >= MinutesInOneHour {
+		remain := math.Mod(ts.Minutes, MinutesInOneHour)
+		more := (ts.Minutes - remain) / MinutesInOneHour
+		ts.Hours += more
+		ts.Minutes = remain
+	}
+
+	if ts.Hours >= HoursInOneDay {
+		remain := math.Mod(ts.Hours, HoursInOneDay)
+		more := (ts.Hours - remain) / HoursInOneDay
+		ts.Days += more
+		ts.Hours = remain
+	}
+
+	if ts.Days >= DaysInOneWeek {
+		remain := math.Mod(ts.Days, DaysInOneWeek)
+		more := (ts.Days - remain) / DaysInOneWeek
+		ts.Weeks += more
+		ts.Days = remain
+	}
+
+	if ts.Weeks >= WeeksInOneMonth {
+		remain := math.Mod(ts.Weeks, WeeksInOneMonth)
+		more := (ts.Weeks - remain) / WeeksInOneMonth
+		ts.Months += more
+		ts.Weeks = remain
+	}
 
 	return ts
 }
