@@ -3,8 +3,8 @@ gitime : time tracker using git commit message commands
 
 [![MIT](https://img.shields.io/github/license/Goutte/gitime?style=for-the-badge)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/Goutte/gitime?include_prereleases&style=for-the-badge)](https://github.com/Goutte/gitime/releases)
-<!--
 [![Build Status](https://img.shields.io/github/actions/workflow/status/Goutte/gitime/go.yml?style=for-the-badge)](https://github.com/Goutte/gitime/actions/workflows/go.yml)
+<!--
 [![Coverage](https://img.shields.io/codecov/c/github/Goutte/gitime?style=for-the-badge&token=FEUB64HRNM)](https://app.codecov.io/gh/Goutte/gitime/)
 -->
 [![A+](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=for-the-badge)](https://goreportcard.com/report/github.com/Goutte/gitime)
