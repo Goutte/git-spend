@@ -1,0 +1,121 @@
+collect:
+
+  - rule: No /spend nor /spent command found
+    message: |
+      feat: test using a YAM%L provider
+
+      It's nicer than inline structs !
+    expected:
+      minutes: 0
+
+  - rule: Ignore /spend commands not at the beginning of a line
+    message: |
+      feat: add a /spend 2h command
+    expected:
+      minutes: 0
+
+  - rule: Ignore /spend commands with unparsable time
+    message: |
+      fix: capitalism
+
+      /spend nothing
+    expected:
+      minutes: 0
+
+  - rule: When no unit is specified, assume minutes (/spend 15)
+    message: |
+      refacto: move to a YAML provider
+
+      /spend 15
+    expected:
+      minutes: 15
+
+  - rule: When no unit is specified, assume minutes (/spend 1h15)
+    message: |
+      feat: be friendly with humans
+
+      /spend 1h15
+    expected:
+      minutes: 75
+
+  - rule: Common usage (/spend 1h)
+    message: |
+      /spend 1h
+    expected:
+      minutes: 60
+
+  - rule: Common usage (/spend 4h30)
+    message: |
+      /spend 4h30
+    expected:
+      minutes: 270
+
+  - rule: Common usage (/spend 1d)
+    message: |
+      /spend 1d
+    expected:
+      minutes: 480
+
+  - rule: Complete usage (/spend 1mo 2w 1d 5h 20m)
+    message: |
+      /spend 1mo 2w 1d 5h 20m
+    expected:
+      minutes: 2143
+
+  - rule: Float usage (/spend 0.5d)
+    message: |
+      /spend 0.5d
+    expected:
+      minutes: 240
+
+  - rule: Float usage, leading dot (/spend .5d)
+    message: |
+      /spend .5d
+    expected:
+      minutes: 240
+
+  - rule: Float usage, trailing dot (/spend 2.d)
+    message: |
+      /spend 2.d
+    expected:
+      minutes: 960
+
+  - rule: Allow alias /spent (/spent 1h)
+    message: |
+      /spent 1h
+    expected:
+      minutes: 60
+
+  - rule: Allow full units (/spend 1 hour 10 minutes)
+    message: |
+      /spend 1 hour 10 minutes
+    expected:
+      minutes: 70
+
+  - rule: Allow bigger-than-modulo (/spend 1h90m)
+    message: |
+      /spend 1h90m
+    expected:
+      minutes: 150
+
+  - rule: Allow missing space typo (/spend3h)
+    message: |
+      /spend3h
+    expected:
+      minutes: 180
+
+  - rule: Allow dates after the time
+    message: |
+      /spend 2h 2023-03-25T14:10:12
+    expected:
+      minutes: 120
+
+  - rule: Cumulate multiple /spend directives
+    message: |
+      feat: merging a bunch of things
+
+      /spend 3h
+      /spend 10m
+      /spend 5m
+    expected:
+      minutes: 195

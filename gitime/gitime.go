@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-var sp = "^/spen[dt]\\s+"
+var sp = "^/spen[dt]\\s*"
 var fl = "[0-9]+[.]?[0-9]*|[0-9]*[.]?[0-9]+"
 var mi = "(?P<minutes>" + fl + ")\\s*(mi?|mins?|minutes?)?\\s*"
-var ho = "(?P<hours>" + fl + ")\\s*(ho?|hours?)\\s*"
-var da = "(?P<days>" + fl + ")\\s*(da?|days?)\\s*"
-var we = "(?P<weeks>" + fl + ")\\s*(we?|weeks?)\\s*"
-var mo = "(?P<months>" + fl + ")\\s*(mo|months?)\\s*"
+var ho = "(?P<hours>" + fl + ")\\s*(hours?|ho?)\\s*"
+var da = "(?P<days>" + fl + ")\\s*(days?|da?)\\s*"
+var we = "(?P<weeks>" + fl + ")\\s*(weeks?|we?)\\s*"
+var mo = "(?P<months>" + fl + ")\\s*(months?|mo)\\s*"
 var miP = "(" + mi + ")?"
 var hoP = "(" + ho + ")?"
 var daP = "(" + da + ")?"
