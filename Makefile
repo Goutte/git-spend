@@ -13,10 +13,13 @@ build: $(shell find . -name \*.go)
 	go build -ldflags="-s -w" -o build/gitime .
 
 release: build
-	upx --brute build/gitime
+	upx --ultra-brute build/gitime
 
 test:
 	go test gitime/*.go
 
-install: release
+install: build
+	sudo install build/gitime /usr/local/bin/
+
+install-optimized: build release
 	sudo install build/gitime /usr/local/bin/
