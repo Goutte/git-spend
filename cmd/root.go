@@ -25,7 +25,8 @@ func Execute() error {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.gitime.yaml)")
+	// Might use some config at some point for things like DaysInOneWeek
+	//rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.gitime.yaml)")
 
 	// Snippets
 	//rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")

@@ -3,10 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/goutte/gitime/gitime"
+	"github.com/spf13/cobra"
 	"github.com/tsuyoshiwada/go-gitlog"
 	"log"
-
-	"github.com/spf13/cobra"
 )
 
 var (
@@ -37,6 +36,9 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 		out = fmt.Sprintf("%d", ts.ToHours())
 	} else {
 		out = ts.String()
+	}
+	if out == "" {
+		out = "No time-tracking directives /spend or /spent found in commits."
 	}
 	return out
 }
