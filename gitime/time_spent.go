@@ -109,6 +109,12 @@ func (ts *TimeSpent) ToMinutes() uint64 {
 	return uint64(minutes)
 }
 
+func (ts *TimeSpent) ToHours() uint64 {
+	minutes := ts.ToMinutes()
+	hours := minutes / MinutesInOneHour // euclidean
+	return hours
+}
+
 func (ts *TimeSpent) Add(other *TimeSpent) *TimeSpent {
 	ts.Months += other.Months
 	ts.Weeks += other.Weeks

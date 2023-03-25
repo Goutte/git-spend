@@ -1,6 +1,8 @@
 gitime : time tracker using git commit message commands
 =======================================================
 
+
+
 Purpose
 -------
 
@@ -21,13 +23,14 @@ Usage
 Go into your git-versioned project's directory, and run:
 
 ```
-    gitime
+    gitime sum
 ```
 
 You can also get the spent time in a specific unit :
 
 ```
-    gitime --minutes
+    gitime sum --minutes
+    gitime sum --hours
 ```
 
 
@@ -47,12 +50,6 @@ Build & Run & Install
 
 ```
     make
-    build/gitime
+    build/gitime sum
 ```
-
-
-Dependencies
-------------
-
-	go get -u github.com/tsuyoshiwada/go-gitlog
 
