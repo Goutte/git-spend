@@ -56,11 +56,23 @@ collect:
     expected:
       minutes: 480
 
+  - rule: Common usage (/spend 1w)
+    message: |
+      /spend 1w
+    expected:
+      minutes: 2400
+
+  - rule: Common usage (/spend 1mo)
+    message: |
+      /spend 1mo
+    expected:
+      minutes: 9600
+
   - rule: Complete usage (/spend 1mo 2w 1d 5h 20m)
     message: |
       /spend 1mo 2w 1d 5h 20m
     expected:
-      minutes: 2143
+      minutes: 15200
 
   - rule: Float usage (/spend 0.5d)
     message: |
@@ -107,6 +119,12 @@ collect:
   - rule: Allow dates after the time
     message: |
       /spend 2h 2023-03-25T14:10:12
+    expected:
+      minutes: 120
+
+  - rule: Allow arbitrary content after the time
+    message: |
+      /spend 2h working like a donkey
     expected:
       minutes: 120
 

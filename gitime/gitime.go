@@ -9,7 +9,7 @@ import (
 
 var sp = "^/spen[dt]\\s*"
 var fl = "[0-9]+[.]?[0-9]*|[0-9]*[.]?[0-9]+"
-var mi = "(?P<minutes>" + fl + ")\\s*(mi?|mins?|minutes?)?\\s*"
+var mi = "(?P<minutes>" + fl + ")\\s*(minutes?|mins?|mi?)?([^-/0-9]|$)"
 var ho = "(?P<hours>" + fl + ")\\s*(hours?|ho?)\\s*"
 var da = "(?P<days>" + fl + ")\\s*(days?|da?)\\s*"
 var we = "(?P<weeks>" + fl + ")\\s*(weeks?|we?)\\s*"
