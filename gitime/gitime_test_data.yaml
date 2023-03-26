@@ -142,6 +142,20 @@ collect:
       string: 0.7 minute
       string_raw: 0.7 minute
 
+  - rule: Allow fractions of days (/spend 1.5d)
+    message: |
+      /spend 1.5d
+    expected:
+      string: 1 day 4 hours
+      string_raw: 1.5 day
+
+  - rule: Allow fractions of months (/spend 2.5mo)
+    message: |
+      /spend 2.5mo
+    expected:
+      string: 2 months 2 weeks
+      string_raw: 2.5 months
+
   - rule: Allow fractions of everything
     message: |
       /spend 0.1mo0.3w10.5d0.6h111.5m
