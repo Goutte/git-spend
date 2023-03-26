@@ -17,7 +17,7 @@ Collect, addition and return all the `/spend` and `/spent` time-tracking directi
 
 > This only looks at the `git log` of the currently checked out branch.
 
-**TLDR; [JUST DOWNLOAD](https://github.com/Goutte/gitime/releases/latest/download/gitime)**
+**TLDR; JUST [DOWNLOAD LINUX/MAC](https://github.com/Goutte/gitime/releases/latest/download/gitime) — [DOWNLOAD WINDOWS](https://github.com/Goutte/gitime/releases/latest/download/gitime.exe)**
 
 
 ### Example of a parsed commit
@@ -42,6 +42,7 @@ Of course, _gitime_ really shines when you have multiple commits with `/spend` c
 ### Specifications
 
 We assume `8` hours per day, `5` days per week, `4` weeks per month. _(like Gitlab does)_
+These can be configured at runtime if needed, using environment variables.
 
 The **complete specification** can be found in [the rules](./gitime/gitime_test_data.yaml) of the test data,
 and in excruciating detail in [the grammar](./gitime/grammar.go).
@@ -86,7 +87,7 @@ gitime sum --author Alice --author bob@email.net
 You can also exclude merge commits :
 
 ```
-gitime sum --exclude-merge
+gitime sum --no-merges
 ```
 
 ### Read from stdin
@@ -97,6 +98,24 @@ You can also parse messages from `stdin` instead of the git log:
 git log > git.log
 cat git.log | gitime sum
 ```
+
+
+### Configure the time modulo
+
+If you live somewhere where work hours per week are limited (to 35 for example) 
+in order to mitigate labor oppression tactics from monopoly hoarders,
+you can use environment variables to control how time is "rolled over" between units :
+
+```
+GITIME_HOURS_IN_ONE_DAY=7 gitime sum
+```
+
+Here are the available environment variables :
+
+- `GITIME_MINUTES_IN_ONE_HOUR` (default: `60`)
+- `GITIME_HOURS_IN_ONE_DAY` (default: `8`)
+- `GITIME_DAYS_IN_ONE_WEEK` (default: `5`)
+- `GITIME_WEEKS_IN_ONE_MONTH` (default: `4`)
 
 
 Download
@@ -137,10 +156,9 @@ Build & Run & Install
 make
 make sum
 make install
-make install-optimized
 ```
 
-> `upx` is used to reduce the binary size in `make install-optimized`.
+> `upx` is used to reduce the binary size in `make install-release`.
 
 
 ### Build for other platforms
@@ -163,7 +181,7 @@ go tool dist list
 Contribute
 ----------
 
-Merge requests are welcome.  Make sure you recorded the time you `/spent` in your commit messages.  :)
+Merge requests are welcome.  Make sure you record the time you `/spend` in your commit messages.  :)
 
 
 ### Ideas Stash
@@ -173,7 +191,6 @@ Merge requests are welcome.  Make sure you recorded the time you `/spent` in you
 - `gitime sum --since <commit>`
 - `gitime sum --since <tag>`
 - `gitime sum --since <datetime>`
-- Configure `DaysInOneWeek` and so forth using `ENV`, or config file
 - `curl install.sh | bash`
 - flatpak
 - git extension

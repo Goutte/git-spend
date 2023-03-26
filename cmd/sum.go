@@ -20,7 +20,6 @@ var (
 	FlagExcludeMerge bool
 )
 
-// sumCmd represents the sum command
 var sumCmd = &cobra.Command{
 	Use:   "sum",
 	Short: "Sum /spent time recorded in commit messages",
@@ -46,7 +45,8 @@ You can also restrict to some commit authors, by name or email:
 func doesStdinHaveData() bool {
 	fileInfo, err := os.Stdin.Stat()
 	if err != nil {
-		fmt.Println("file.Stat()", err)
+		fmt.Println("os.Stdin.Stat() failed", err)
+		return false
 	}
 
 	//if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
@@ -86,8 +86,11 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func ReadGitLog(onlyAuthors []string, excludeMerge bool) string {
-	git := gitlog.New(&gitlog.Config{})
+// ReadGitLog reads the git log of the repository of the specified directpry
+func ReadGitLog(onlyAuthors []string, excludeMerge bool, directory string) string {
+	git := gitlog.New(&gitlog.Config{
+		Path: directory,
+	})
 	params := &gitlog.Params{
 		IgnoreMerges: excludeMerge,
 	}
@@ -110,15 +113,24 @@ func ReadGitLog(onlyAuthors []string, excludeMerge bool) string {
 }
 
 func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
-
 	var gitLog string
 	if doesStdinHaveData() {
+		if len(onlyAuthors) > 0 {
+			log.Fatalln(`Flag --author is not supported with stdin parsing.
+Meanwhile, you can use --author on git log, like so:
+
+    git log --author Bob > log.log && cat log.log | gitime sum`)
+		}
+		if excludeMerge {
+			log.Fatalln(`Flag --no-merges is not supported with stdin parsing.
+Meanwhile, you can use --no-merges on git log, like so:
+
+    git log --no-merges > log.log && cat log.log | gitime sum`)
+		}
 		gitLog = readStdin()
 	} else {
-		gitLog = ReadGitLog(onlyAuthors, excludeMerge)
+		gitLog = ReadGitLog(onlyAuthors, excludeMerge, ".")
 	}
-
-	//fmt.Println(gitLog)
 
 	return gitime.CollectTimeSpent(gitLog)
 }
@@ -191,9 +203,9 @@ func addFilterFlags(command *cobra.Command) {
 	)
 	command.Flags().BoolVar(
 		&FlagExcludeMerge,
-		"exclude-merge",
+		"no-merges",
 		false,
-		"exclude merge commits",
+		"ignore merge commits",
 	)
 }
 

@@ -5,16 +5,6 @@ import (
 	"math"
 )
 
-const (
-	WeeksInOneMonth   = 4.0
-	DaysInOneWeek     = 5.0
-	HoursInOneDay     = 8.0
-	MinutesInOneHour  = 60.0
-	MinutesInOneDay   = MinutesInOneHour * HoursInOneDay
-	MinutesInOneWeek  = MinutesInOneHour * HoursInOneDay * DaysInOneWeek
-	MinutesInOneMonth = MinutesInOneHour * HoursInOneDay * DaysInOneWeek * WeeksInOneMonth
-)
-
 type TimeSpent struct {
 	Months  float64
 	Weeks   float64

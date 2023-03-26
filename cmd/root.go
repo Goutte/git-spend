@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/goutte/gitime/gitime"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -25,10 +26,10 @@ func Execute() error {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Might use some config at some point for things like DaysInOneWeek
+	// Might use a config file as well at some point for things like DaysInOneWeek
 	//rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.gitime.yaml)")
 
-	// Snippets
+	// Snippets for viper config
 	//rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
 	//rootCmd.PersistentFlags().StringVarP(&userLicense, "license", "l", "", "name of license for the project")
 	//rootCmd.PersistentFlags().Bool("minutes", true, "show result in minutes")
@@ -50,9 +51,12 @@ func initConfig() {
 		viper.SetConfigName(".gitime")
 	}
 
+	viper.SetEnvPrefix("gitime")
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err == nil {
 		//fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
+
+	gitime.UpdateTimeModuloConfiguration()
 }
