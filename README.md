@@ -16,7 +16,7 @@ Collect, addition and return all the `/spend` and `/spent` time-tracking directi
 
 > This only looks at the `git log` of the currently checked out branch.
 
-**TLDR; [DOWNLOAD EXECUTABLE](https://github.com/Goutte/gitime/releases/latest/download/gitime)**
+**TLDR; [JUST DOWNLOAD](https://github.com/Goutte/gitime/releases/latest/download/gitime)**
 
 
 ### Example of parsed commit:
