@@ -69,8 +69,26 @@ func (ts *TimeSpent) ToMinutes() uint64 {
 
 func (ts *TimeSpent) ToHours() uint64 {
 	minutes := ts.ToMinutes()
-	hours := minutes / MinutesInOneHour // euclidean
-	return hours
+	hours := math.Round(float64(minutes) / MinutesInOneHour)
+	return uint64(hours)
+}
+
+func (ts *TimeSpent) ToDays() uint64 {
+	minutes := ts.ToMinutes()
+	hours := math.Round(float64(minutes) / MinutesInOneDay)
+	return uint64(hours)
+}
+
+func (ts *TimeSpent) ToWeeks() uint64 {
+	minutes := ts.ToMinutes()
+	hours := math.Round(float64(minutes) / MinutesInOneWeek)
+	return uint64(hours)
+}
+
+func (ts *TimeSpent) ToMonths() uint64 {
+	minutes := ts.ToMinutes()
+	hours := math.Round(float64(minutes) / MinutesInOneMonth)
+	return uint64(hours)
 }
 
 func (ts *TimeSpent) Add(other *TimeSpent) *TimeSpent {

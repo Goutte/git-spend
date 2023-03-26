@@ -8,19 +8,6 @@ on:
 
 jobs:
 
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Set up Go
-#        uses: actions/setup-go@v2
-#        with:
-#          go-version: 1.18
-#
-#      - name: Build
-#        run: make
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -37,30 +24,29 @@ jobs:
       - name: Test
         run: make test
 
-#  coverage:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#
-#      - name: Set up Go
-#        uses: actions/setup-go@v2
-#        with:
-#          go-version: 1.16
-#
-#      - name: Build
-#        run: make
-#
-#      - name: Test
-#        run: make test
-#
-#      - name: Generate coverage report
-#        run: |
-#          go test `go list ./... | grep -v examples` -coverprofile=coverage.txt -covermode=atomic
-#
-#      - name: Upload coverage report
-#        uses: codecov/codecov-action@v1.0.2
-#        with:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
+      - name: Build
+        run: make
+
+      - name: Test
+        run: make test
+
+      - name: Generate coverage report
+        run: make coverage
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
 #          token: 50ed170f-08b5-4484-97d8-37771615ae42
-#          file: ./coverage.txt
-#          flags: unittests
+          file: ./coverage.txt
+          flags: unittests
 #          name: codecov-umbrella

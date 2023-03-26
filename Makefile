@@ -16,7 +16,10 @@ release: build
 	upx --ultra-brute build/gitime
 
 test:
-	go test gitime/*.go
+	go test `go list ./...`
+
+coverage:
+	go test `go list ./...` -coverprofile=coverage.txt -covermode=atomic
 
 install: build
 	sudo install build/gitime /usr/local/bin/

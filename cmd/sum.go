@@ -9,9 +9,13 @@ import (
 )
 
 var (
-	FlagAuthors []string
-	FlagMinutes bool
-	FlagHours   bool
+	FlagAuthors      []string
+	FlagMinutes      bool
+	FlagHours        bool
+	FlagDays         bool
+	FlagWeeks        bool
+	FlagMonths       bool
+	FlagExcludeMerge bool
 )
 
 // sumCmd represents the sum command
@@ -32,7 +36,7 @@ You can also restrict to some commit authors, by name or email:
 
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		ts := sum(FlagAuthors).Normalize()
+		ts := Sum(FlagAuthors, FlagExcludeMerge).Normalize()
 		fmt.Println(formatTimeSpent(ts))
 	},
 }
@@ -43,6 +47,12 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 		out = fmt.Sprintf("%d", ts.ToMinutes())
 	} else if FlagHours {
 		out = fmt.Sprintf("%d", ts.ToHours())
+	} else if FlagDays {
+		out = fmt.Sprintf("%d", ts.ToDays())
+	} else if FlagWeeks {
+		out = fmt.Sprintf("%d", ts.ToWeeks())
+	} else if FlagMonths {
+		out = fmt.Sprintf("%d", ts.ToMonths())
 	} else {
 		out = ts.String()
 	}
@@ -52,10 +62,12 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func sum(onlyAuthors []string) *gitime.TimeSpent {
+func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
 	git := gitlog.New(&gitlog.Config{})
-
-	commits, err := git.Log(nil, nil)
+	params := &gitlog.Params{
+		IgnoreMerges: excludeMerge,
+	}
+	commits, err := git.Log(nil, params)
 	if err != nil {
 		log.Fatalln("Cannot read git log:", err)
 	}
@@ -93,12 +105,6 @@ func isCommitByAnyAuthor(commit *gitlog.Commit, authors []string) bool {
 	return false
 }
 
-func init() {
-	rootCmd.AddCommand(sumCmd)
-	addFormatFlags(sumCmd)
-	addFilterFlags(sumCmd)
-}
-
 func addFormatFlags(command *cobra.Command) {
 	command.Flags().BoolVarP(
 		&FlagMinutes,
@@ -114,6 +120,27 @@ func addFormatFlags(command *cobra.Command) {
 		false,
 		"show sum in hours",
 	)
+	command.Flags().BoolVarP(
+		&FlagDays,
+		"days",
+		"",
+		false,
+		"show sum in days",
+	)
+	command.Flags().BoolVarP(
+		&FlagWeeks,
+		"weeks",
+		"",
+		false,
+		"show sum in weeks",
+	)
+	command.Flags().BoolVarP(
+		&FlagMonths,
+		"months",
+		"",
+		false,
+		"show sum in months",
+	)
 }
 
 func addFilterFlags(command *cobra.Command) {
@@ -124,4 +151,17 @@ func addFilterFlags(command *cobra.Command) {
 		[]string{},
 		"only use commits by these authors (can be repeated)",
 	)
+	command.Flags().BoolVarP(
+		&FlagExcludeMerge,
+		"exclude-merge",
+		"",
+		false,
+		"exclude merge commits",
+	)
+}
+
+func init() {
+	rootCmd.AddCommand(sumCmd)
+	addFormatFlags(sumCmd)
+	addFilterFlags(sumCmd)
 }

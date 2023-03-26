@@ -39,20 +39,32 @@ Usage
 Go into your git-versioned project's directory, and run:
 
 ```
-cd <some versioned project with commits using /spend directives>
+cd <some git versioned project with commits using /spend directives>
 gitime sum
 ```
 > `> 2 days 1 hour 42 minutes`
+
+
+### Filter by authors
 
 You can also get the spent time in a specific unit :
 
 ```
 gitime sum --minutes
 gitime sum --hours
+gitime sum --days
 ```
-> Although gitime does support floating point numbers in /spend directives,
-> these values will always be rounded to integers, for convenience.
+> These values will always be rounded to integers, for convenience,
+> although _gitime_ does understand floating point numbers in `/spend` directives,
 
+
+### Exclude merge commits
+
+You can also exclude merge commits :
+
+```
+gitime sum --exclude-merge
+```
 
 Download
 --------
