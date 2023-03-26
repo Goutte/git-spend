@@ -7,7 +7,7 @@ gitime : time tracker using git commit message commands
 [![Coverage](https://img.shields.io/codecov/c/github/Goutte/gitime?style=for-the-badge)](https://app.codecov.io/gh/Goutte/gitime/)
 [![A+](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=for-the-badge)](https://goreportcard.com/report/github.com/Goutte/gitime)
 [![Code Quality](https://img.shields.io/codefactor/grade/github/Goutte/gitime?style=for-the-badge)](https://www.codefactor.io/repository/github/Goutte/gitime)
-
+[![Download](https://img.shields.io/github/downloads/Goutte/gitime/total?style=for-the-badge)](https://github.com/Goutte/gitime/releases/download/latest/gitime)
 
 Purpose
 -------
@@ -28,7 +28,8 @@ Careful, it's still sharp.
 
 We assume `8` hours per day, `5` days per week, `4` weeks per month. _(like Gitlab does)_
 
-The complete specification can be found in the [test data](./gitime/gitime_test_data.yaml).
+The **complete specification** can be found in [the rules](./gitime/gitime_test_data.yaml) of the test data,
+and in excruciating detail in [the grammar](./gitime/grammar.go).
 
 
 Usage
@@ -67,7 +68,7 @@ gitime sum --exclude-merge
 Download
 --------
 
-You can download the [latest build from the releases](https://github.com/Goutte/gitime/releases).
+You can [download the binary](https://github.com/Goutte/gitime/releases/download/latest/gitime) straight from the [latest build in the releases](https://github.com/Goutte/gitime/releases).
 
 You can also install via `go get` (hopefully) :
 
@@ -128,3 +129,4 @@ Merge requests are welcome.  Make sure you recorded the time you `/spent` in you
 - git extension
 - docker
 - i18n _(godspeed)_
+- Right-To-Left _(help)_

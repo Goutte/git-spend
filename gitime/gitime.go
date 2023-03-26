@@ -7,21 +7,6 @@ import (
 	"strings"
 )
 
-var sp = "^/spen[dt]\\s*"
-var fl = "[0-9]+[.]?[0-9]*|[0-9]*[.]?[0-9]+"
-var mi = "(?P<minutes>" + fl + ")\\s*(minutes?|mins?|mi?)?([^-/0-9]|$)"
-var ho = "(?P<hours>" + fl + ")\\s*(hours?|ho?)\\s*"
-var da = "(?P<days>" + fl + ")\\s*(days?|da?)\\s*"
-var we = "(?P<weeks>" + fl + ")\\s*(weeks?|we?)\\s*"
-var mo = "(?P<months>" + fl + ")\\s*(months?|mo)\\s*"
-var miP = "(" + mi + ")?"
-var hoP = "(" + ho + ")?"
-var daP = "(" + da + ")?"
-var weP = "(" + we + ")?"
-var moP = "(" + mo + ")?"
-
-var spentAllRegex = regexp.MustCompile(sp + moP + weP + daP + hoP + miP)
-
 // Keep these sorted by decreasing priority, since first match breaks.
 var expressions = []*regexp.Regexp{
 	spentAllRegex,
@@ -89,7 +74,7 @@ func extractTimeComponent(matches []string, r *regexp.Regexp, component string) 
 	}
 	componentFloat, err := strconv.ParseFloat(componentString, 64)
 	if err != nil {
-		// this should never happen unless we fiddle with and break our regexes
+		// this should never happen unless weeksRegex fiddle with and break our regexes
 		fmt.Println("cannot parse", component, componentString, r.String())
 		return 0
 	}
