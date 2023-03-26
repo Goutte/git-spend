@@ -126,6 +126,34 @@ collect:
     expected:
       minutes: 150
 
+  - rule: Allow bigger-than-modulo (/spend 10.5h)
+    message: |
+      /spend 10.5h
+    expected:
+      minutes: 630
+      string: 1 day 2 hours 30 minutes
+      string_raw: 10.5 hours
+
+  - rule: Allow fractions of minutes (/spend 0.7m)
+    message: |
+      /spend 0.7m
+    expected:
+      minutes: 1
+      string: 0.7 minute
+      string_raw: 0.7 minute
+
+  - rule: Allow fractions of everything
+    message: |
+      /spend 0.1mo0.3w10.5d0.6h111.5m
+    expected:
+      months: 1
+      weeks: 3
+      days: 14
+      hours: 114
+      minutes: 6868
+      string_raw: 0.1 month 0.3 week 10.5 days 0.6 hour 111.5 minutes
+      string: 2 weeks 4 days 2 hours 27.5 minutes
+
   - rule: Allow dates after the time
     message: |
       /spend 2h 2023-03-25T14:10:12

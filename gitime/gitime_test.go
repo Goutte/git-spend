@@ -19,12 +19,13 @@ type CollectTestDatum struct {
 
 // CollectTestExpected uses pointers, to handle missing values gracefully
 type CollectTestExpected struct {
-	Minutes *uint64 `yaml:"minutes"`
-	Hours   *uint64 `yaml:"hours"`
-	Days    *uint64 `yaml:"days"`
-	Weeks   *uint64 `yaml:"weeks"`
-	Months  *uint64 `yaml:"months"`
-	String  *string `yaml:"string"`
+	Minutes   *uint64 `yaml:"minutes"`
+	Hours     *uint64 `yaml:"hours"`
+	Days      *uint64 `yaml:"days"`
+	Weeks     *uint64 `yaml:"weeks"`
+	Months    *uint64 `yaml:"months"`
+	String    *string `yaml:"string"`
+	StringRaw *string `yaml:"string_raw"`
 }
 
 func TestCollectTimeSpent(t *testing.T) {
@@ -68,6 +69,11 @@ func TestCollectTimeSpent(t *testing.T) {
 			if tt.Expected.String != nil {
 				if got := CollectTimeSpent(tt.Message).Normalize().String(); got != *tt.Expected.String {
 					t.Errorf("CollectTimeSpent(%s).Normalize().String() = %v, want %v", tt.Message, got, *tt.Expected.String)
+				}
+			}
+			if tt.Expected.StringRaw != nil {
+				if got := CollectTimeSpent(tt.Message).String(); got != *tt.Expected.StringRaw {
+					t.Errorf("CollectTimeSpent(%s).String() = %v, want %v", tt.Message, got, *tt.Expected.StringRaw)
 				}
 			}
 		})

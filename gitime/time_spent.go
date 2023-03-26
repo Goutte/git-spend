@@ -64,7 +64,7 @@ func (ts *TimeSpent) ToMinutes() uint64 {
 	minutes += ts.Weeks * MinutesInOneWeek
 	minutes += ts.Months * MinutesInOneMonth
 
-	return uint64(minutes)
+	return uint64(math.Round(minutes))
 }
 
 func (ts *TimeSpent) ToHours() uint64 {
