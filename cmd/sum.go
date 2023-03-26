@@ -144,17 +144,15 @@ func addFormatFlags(command *cobra.Command) {
 }
 
 func addFilterFlags(command *cobra.Command) {
-	command.Flags().StringArrayVarP(
+	command.Flags().StringArrayVar(
 		&FlagAuthors,
 		"author",
-		"",
 		[]string{},
 		"only use commits by these authors (can be repeated)",
 	)
-	command.Flags().BoolVarP(
+	command.Flags().BoolVar(
 		&FlagExcludeMerge,
 		"exclude-merge",
-		"",
 		false,
 		"exclude merge commits",
 	)

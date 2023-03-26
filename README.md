@@ -53,7 +53,7 @@ gitime sum --hours
 gitime sum --days
 ```
 > These values will always be rounded to integers, for convenience,
-> although _gitime_ does understand floating point numbers in `/spend` directives,
+> although _gitime_ does understand floating point numbers in `/spend` directives.
 
 
 ### Exclude merge commits
