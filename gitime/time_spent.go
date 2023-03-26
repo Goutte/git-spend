@@ -47,7 +47,7 @@ func (ts *TimeSpent) String() string {
 		}
 		s += ts.hoursToString()
 	}
-	if ts.Minutes > 0.0 {
+	if ts.Minutes >= 0.1 {
 		if s != "" {
 			s += " "
 		}
