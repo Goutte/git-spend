@@ -7,7 +7,7 @@ gitime : time tracker using git commit message commands
 [![Coverage](https://img.shields.io/codecov/c/github/Goutte/gitime?style=for-the-badge)](https://app.codecov.io/gh/Goutte/gitime/)
 [![A+](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=for-the-badge)](https://goreportcard.com/report/github.com/Goutte/gitime)
 [![Code Quality](https://img.shields.io/codefactor/grade/github/Goutte/gitime?style=for-the-badge)](https://www.codefactor.io/repository/github/Goutte/gitime)
-[![Download](https://img.shields.io/github/downloads/Goutte/gitime/total?style=for-the-badge)](https://github.com/Goutte/gitime/releases/download/latest/gitime)
+[![Download](https://img.shields.io/github/downloads/Goutte/gitime/total?style=for-the-badge)](https://github.com/Goutte/gitime/releases/latest/download/gitime)
 
 Purpose
 -------
@@ -15,6 +15,8 @@ Purpose
 Collect, addition and return all the `/spend` and `/spent` time-tracking directives in git commit messages.
 
 > This only looks at the `git log` of the currently checked out branch.
+
+**TLDR; [DOWNLOAD EXECUTABLE](https://github.com/Goutte/gitime/releases/latest/download/gitime)**
 
 
 ### Example of parsed commit:
