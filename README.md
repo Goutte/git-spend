@@ -134,6 +134,23 @@ make install-optimized
 > `upx` is used to reduce the binary size in `make install-optimized`.
 
 
+### Build for other platforms
+
+You may use the `GOAS` and `GOARCH` environment variables to control the build targets:
+
+```
+GOOS=<target-OS> GOARCH=<target-architecture> go build -o build/gitime .
+```
+
+To list available targets (`os`/`arch`), you can run:
+
+```
+go tool dist list
+```
+
+> There's an example in the `Makefile`, with the recipe `make build-windows-amd64`.
+
+
 Contribute
 ----------
 

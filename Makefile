@@ -8,9 +8,17 @@ run:
 sum:
 	go run main.go sum
 
+BINARY_PATH=build/gitime
+
+# use the -s and -w linker flags to strip the debugging information
+LD_FLAGS_STRIP=-s -w
+
 build: $(shell find . -name \*.go)
 	# use the -s and -w linker flags to strip the debugging information
-	go build -ldflags="-s -w" -o build/gitime .
+	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) .
+
+build-windows-amd64: $(shell find . -name \*.go)
+	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe .
 
 release: build
 	upx --ultra-brute build/gitime
