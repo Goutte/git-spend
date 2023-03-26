@@ -22,6 +22,12 @@ collect:
     expected:
       minutes: 0
 
+  - rule: Ignore /spend commands with negative time
+    message: |
+      /spend -3h
+    expected:
+      minutes: 0
+
   - rule: When no unit is specified, assume minutes (/spend 15)
     message: |
       refacto: move to a YAML provider
@@ -66,13 +72,23 @@ collect:
     message: |
       /spend 1mo
     expected:
+      months: 1
+      weeks: 4
+      days: 20
+      hours: 160
       minutes: 9600
+      string: 1 month
 
   - rule: Complete usage (/spend 1mo 2w 1d 5h 20m)
     message: |
       /spend 1mo 2w 1d 5h 20m
     expected:
+      months: 2
+      weeks: 6
+      days: 32
+      hours: 253
       minutes: 15200
+      string: 1 month 2 weeks 1 day 5 hours 20 minutes
 
   - rule: Float usage (/spend 0.5d)
     message: |
@@ -110,12 +126,6 @@ collect:
     expected:
       minutes: 150
 
-  - rule: Allow missing space typo (/spend3h)
-    message: |
-      /spend3h
-    expected:
-      minutes: 180
-
   - rule: Allow dates after the time
     message: |
       /spend 2h 2023-03-25T14:10:12
@@ -127,6 +137,12 @@ collect:
       /spend 2h working like a donkey
     expected:
       minutes: 120
+
+  - rule: Tolerate missing space typo (/spend3h)
+    message: |
+      /spend3h
+    expected:
+      minutes: 180
 
   - rule: Cumulate multiple /spend directives
     message: |
