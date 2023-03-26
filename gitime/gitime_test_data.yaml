@@ -1,5 +1,19 @@
 collect:
 
+  - rule: Example from the README
+    message: |
+      feat: implement a nice feature
+
+      Careful, it's still sharp.
+      /spend 5h30
+    expected:
+      months: 0
+      weeks: 0
+      days: 1
+      hours: 6
+      minutes: 330
+      string: 5 hours 30 minutes
+
   - rule: No /spend nor /spent command found
     message: |
       feat: test using a YAM%L provider
@@ -175,13 +189,13 @@ collect:
       string_raw: 0.1 month 0.3 week 10.5 days 0.6 hour 111.5 minutes
       string: 2 weeks 4 days 2 hours 27.5 minutes
 
-  - rule: Allow dates after the time
+  - rule: Allow (and ignore) dates after the time
     message: |
       /spend 2h 2023-03-25T14:10:12
     expected:
       minutes: 120
 
-  - rule: Allow arbitrary content after the time
+  - rule: Allow (and ignore) arbitrary content after the time
     message: |
       /spend 2h working like a donkey
     expected:

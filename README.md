@@ -102,5 +102,29 @@ Build & Run & Install
 make
 make sum
 make install
+make install-optimized
 ```
 
+> `upx` is used to reduce the binary size in `make install-optimized`.
+
+
+Contribute
+----------
+
+Merge requests are welcome.  Make sure you recorded the time you `/spent` in your commit messages.  :)
+
+
+### Ideas Stash
+
+> You can pick and start any, or do something else entirely.
+
+- `gitime sum --since <commit>`
+- `gitime sum --since <tag>`
+- `gitime sum --since <datetime>`
+- Configure `DaysInOneWeek` and so forth using `ENV`, or config file
+- `curl install.sh | bash`
+- Parse stdin `git log | gitime sum`
+- flatpak
+- git extension
+- docker
+- i18n _(godspeed)_
