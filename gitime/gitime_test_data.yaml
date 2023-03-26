@@ -2,17 +2,17 @@ collect:
 
   - rule: Example from the README
     message: |
-      feat: implement a nice feature
+      feat(crunch): implement a nice feature
 
       Careful, it's still sharp.
-      /spend 5h30
+      /spend 10h30
     expected:
       months: 0
       weeks: 0
       days: 1
-      hours: 6
-      minutes: 330
-      string: 5 hours 30 minutes
+      hours: 11
+      minutes: 630
+      string: 1 day 2 hours 30 minutes
 
   - rule: No /spend nor /spent command found
     message: |

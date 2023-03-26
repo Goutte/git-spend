@@ -9,6 +9,7 @@ gitime : time tracker using git commit message commands
 [![Code Quality](https://img.shields.io/codefactor/grade/github/Goutte/gitime?style=for-the-badge)](https://www.codefactor.io/repository/github/Goutte/gitime)
 [![Download](https://img.shields.io/github/downloads/Goutte/gitime/total?style=for-the-badge)](https://github.com/Goutte/gitime/releases/latest/download/gitime)
 
+
 Purpose
 -------
 
@@ -19,14 +20,26 @@ Collect, addition and return all the `/spend` and `/spent` time-tracking directi
 **TLDR; [JUST DOWNLOAD](https://github.com/Goutte/gitime/releases/latest/download/gitime)**
 
 
-### Example of parsed commit:
+### Example of a parsed commit
 
 ```
-feat: implement a nice feature
+feat(crunch): implement a nice feature
 
 Careful, it's still sharp.
-/spend 5h30
+/spend 10h30
 ```
+
+Running:
+```
+$ gitime sum
+```
+would yield:
+> `1 day 2 hours 30 minutes`
+
+Of course, _gitime_ really shines when you have multiple commits with `/spend` commands that you want to sum.
+
+
+### Specifications
 
 We assume `8` hours per day, `5` days per week, `4` weeks per month. _(like Gitlab does)_
 
@@ -46,7 +59,7 @@ gitime sum
 > `> 2 days 1 hour 42 minutes`
 
 
-### Filter by authors
+### Format the output
 
 You can also get the spent time in a specific unit :
 
@@ -59,6 +72,15 @@ gitime sum --days
 > although _gitime_ does understand floating point numbers in `/spend` directives.
 
 
+### Filter by commit authors
+
+You can track the time of specified authors only, by `name` or `email` :
+
+```
+gitime sum --author Alice --author bob@email.net
+```
+
+
 ### Exclude merge commits
 
 You can also exclude merge commits :
@@ -67,10 +89,11 @@ You can also exclude merge commits :
 gitime sum --exclude-merge
 ```
 
+
 Download
 --------
 
-You can [download the binary](https://github.com/Goutte/gitime/releases/download/latest/gitime) straight from the [latest build in the releases](https://github.com/Goutte/gitime/releases).
+You can [download the binary](https://github.com/Goutte/gitime/releases/latest/download/gitime) straight from the [latest build in the releases](https://github.com/Goutte/gitime/releases).
 
 You can also install via `go get` (hopefully) :
 
