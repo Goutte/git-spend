@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	FlagAuthors []string
 	FlagMinutes bool
 	FlagHours   bool
 )
@@ -17,13 +18,21 @@ var (
 var sumCmd = &cobra.Command{
 	Use:   "sum",
 	Short: "Sum /spent time recorded in commit messages",
-	Long: `The commit messages of the currently checked out branch of the git repository of the current working directory will be read and their /spend and /spent directives will be parsed and summed.
+	Long: `The /spend and /spent directives will be parsed and summed
+from the commit messages of the currently checked out branch
+of the git repository of the current working directory.
+
 You can also get a raw number in a specific unit:
 
     gitime sum --minutes
+
+You can also restrict to some commit authors, by name or email:
+
+    gitime sum --author=Alice --author=bob@pop.net --author=Eve
+
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		ts := sum().Normalize()
+		ts := sum(FlagAuthors).Normalize()
 		fmt.Println(formatTimeSpent(ts))
 	},
 }
@@ -43,7 +52,7 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func sum() *gitime.TimeSpent {
+func sum(onlyAuthors []string) *gitime.TimeSpent {
 	git := gitlog.New(&gitlog.Config{})
 
 	commits, err := git.Log(nil, nil)
@@ -53,6 +62,9 @@ func sum() *gitime.TimeSpent {
 
 	ts := &gitime.TimeSpent{}
 	for _, commit := range commits {
+		if !isCommitByAnyAuthor(commit, onlyAuthors) {
+			continue
+		}
 		ts.Add(gitime.CollectTimeSpent(commit.Subject))
 		ts.Add(gitime.CollectTimeSpent(commit.Body))
 	}
@@ -60,9 +72,31 @@ func sum() *gitime.TimeSpent {
 	return ts
 }
 
+func isCommitByAnyAuthor(commit *gitlog.Commit, authors []string) bool {
+	if len(authors) == 0 {
+		return true
+	}
+
+	if commit.Author == nil {
+		return false
+	}
+
+	for _, author := range authors {
+		if commit.Author.Name == author {
+			return true
+		}
+		if commit.Author.Email == author {
+			return true
+		}
+	}
+
+	return false
+}
+
 func init() {
 	rootCmd.AddCommand(sumCmd)
 	addFormatFlags(sumCmd)
+	addFilterFlags(sumCmd)
 }
 
 func addFormatFlags(command *cobra.Command) {
@@ -71,13 +105,23 @@ func addFormatFlags(command *cobra.Command) {
 		"minutes",
 		"",
 		false,
-		"Show sum in minutes",
+		"show sum in minutes",
 	)
 	command.Flags().BoolVarP(
 		&FlagHours,
 		"hours",
 		"",
 		false,
-		"Show sum in hours",
+		"show sum in hours",
+	)
+}
+
+func addFilterFlags(command *cobra.Command) {
+	command.Flags().StringArrayVarP(
+		&FlagAuthors,
+		"author",
+		"",
+		[]string{},
+		"only use commits by these authors (can be repeated)",
 	)
 }
