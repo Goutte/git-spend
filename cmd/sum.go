@@ -5,7 +5,9 @@ import (
 	"github.com/goutte/gitime/gitime"
 	"github.com/spf13/cobra"
 	"github.com/tsuyoshiwada/go-gitlog"
+	"io"
 	"log"
+	"os"
 )
 
 var (
@@ -41,6 +43,28 @@ You can also restrict to some commit authors, by name or email:
 	},
 }
 
+func doesStdinHaveData() bool {
+	fileInfo, err := os.Stdin.Stat()
+	if err != nil {
+		fmt.Println("file.Stat()", err)
+	}
+
+	//if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
+	if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
+		return true
+	}
+
+	return false
+}
+
+func readStdin() string {
+	stdin, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fmt.Sprintf("%s", stdin)
+}
+
 func formatTimeSpent(ts *gitime.TimeSpent) string {
 	out := ""
 	if FlagMinutes {
@@ -62,7 +86,7 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
+func ReadGitLog(onlyAuthors []string, excludeMerge bool) string {
 	git := gitlog.New(&gitlog.Config{})
 	params := &gitlog.Params{
 		IgnoreMerges: excludeMerge,
@@ -72,16 +96,31 @@ func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
 		log.Fatalln("Cannot read git log:", err)
 	}
 
-	ts := &gitime.TimeSpent{}
+	s := ""
 	for _, commit := range commits {
 		if !isCommitByAnyAuthor(commit, onlyAuthors) {
 			continue
 		}
-		ts.Add(gitime.CollectTimeSpent(commit.Subject))
-		ts.Add(gitime.CollectTimeSpent(commit.Body))
+
+		s += commit.Subject + "\n"
+		s += commit.Body + "\n"
 	}
 
-	return ts
+	return s
+}
+
+func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
+
+	var gitLog string
+	if doesStdinHaveData() {
+		gitLog = readStdin()
+	} else {
+		gitLog = ReadGitLog(onlyAuthors, excludeMerge)
+	}
+
+	//fmt.Println(gitLog)
+
+	return gitime.CollectTimeSpent(gitLog)
 }
 
 func isCommitByAnyAuthor(commit *gitlog.Commit, authors []string) bool {

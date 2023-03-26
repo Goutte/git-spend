@@ -89,6 +89,15 @@ You can also exclude merge commits :
 gitime sum --exclude-merge
 ```
 
+### Read from stdin
+
+You can also parse messages from `stdin` instead of the git log:
+
+```
+git log > git.log
+cat git.log | gitime sum
+```
+
 
 Download
 --------
@@ -166,7 +175,6 @@ Merge requests are welcome.  Make sure you recorded the time you `/spent` in you
 - `gitime sum --since <datetime>`
 - Configure `DaysInOneWeek` and so forth using `ENV`, or config file
 - `curl install.sh | bash`
-- Parse stdin `git log | gitime sum`
 - flatpak
 - git extension
 - docker

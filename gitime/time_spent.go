@@ -92,11 +92,11 @@ func (ts *TimeSpent) ToMonths() uint64 {
 }
 
 func (ts *TimeSpent) Add(other *TimeSpent) *TimeSpent {
-	ts.Months += other.Months
-	ts.Weeks += other.Weeks
-	ts.Days += other.Days
-	ts.Hours += other.Hours
 	ts.Minutes += other.Minutes
+	ts.Hours += other.Hours
+	ts.Days += other.Days
+	ts.Weeks += other.Weeks
+	ts.Months += other.Months
 
 	return ts
 }
@@ -168,48 +168,16 @@ func (ts *TimeSpent) normalizeModuli() *TimeSpent {
 	return ts
 }
 
-func (ts *TimeSpent) monthsToString() string {
+func (ts *TimeSpent) minutesToString() string {
 	s := ""
-	if ts.Months > 0.0 {
-		intPart, fracPart := math.Modf(ts.Months)
+	if ts.Minutes > 0.0 {
+		intPart, fracPart := math.Modf(ts.Minutes)
 		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d month", int64(intPart))
+			s += fmt.Sprintf("%d minute", uint64(intPart))
 		} else {
-			s += fmt.Sprintf("%.1f month", ts.Months)
+			s += fmt.Sprintf("%.1f minute", ts.Minutes)
 		}
-		if ts.Months >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
-}
-
-func (ts *TimeSpent) weeksToString() string {
-	s := ""
-	if ts.Weeks > 0.0 {
-		intPart, fracPart := math.Modf(ts.Weeks)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d week", int64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f week", ts.Weeks)
-		}
-		if ts.Weeks >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
-}
-
-func (ts *TimeSpent) daysToString() string {
-	s := ""
-	if ts.Days > 0.0 {
-		intPart, fracPart := math.Modf(ts.Days)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d day", uint64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f day", ts.Days)
-		}
-		if ts.Days >= 2.0 {
+		if ts.Minutes >= 2.0 {
 			s += "s"
 		}
 	}
@@ -232,16 +200,48 @@ func (ts *TimeSpent) hoursToString() string {
 	return s
 }
 
-func (ts *TimeSpent) minutesToString() string {
+func (ts *TimeSpent) daysToString() string {
 	s := ""
-	if ts.Minutes > 0.0 {
-		intPart, fracPart := math.Modf(ts.Minutes)
+	if ts.Days > 0.0 {
+		intPart, fracPart := math.Modf(ts.Days)
 		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d minute", uint64(intPart))
+			s += fmt.Sprintf("%d day", uint64(intPart))
 		} else {
-			s += fmt.Sprintf("%.1f minute", ts.Minutes)
+			s += fmt.Sprintf("%.1f day", ts.Days)
 		}
-		if ts.Minutes >= 2.0 {
+		if ts.Days >= 2.0 {
+			s += "s"
+		}
+	}
+	return s
+}
+
+func (ts *TimeSpent) weeksToString() string {
+	s := ""
+	if ts.Weeks > 0.0 {
+		intPart, fracPart := math.Modf(ts.Weeks)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d week", int64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f week", ts.Weeks)
+		}
+		if ts.Weeks >= 2.0 {
+			s += "s"
+		}
+	}
+	return s
+}
+
+func (ts *TimeSpent) monthsToString() string {
+	s := ""
+	if ts.Months > 0.0 {
+		intPart, fracPart := math.Modf(ts.Months)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d month", int64(intPart))
+		} else {
+			s += fmt.Sprintf("%.1f month", ts.Months)
+		}
+		if ts.Months >= 2.0 {
 			s += "s"
 		}
 	}
