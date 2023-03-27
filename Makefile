@@ -17,24 +17,34 @@ sum:
 
 BINARY_PATH=build/gitime
 
-# use the -s and -w linker flags to strip the debugging information
+# Use the -s and -w linker flags to strip the debugging information
 LD_FLAGS_STRIP=-s -w
 
 clean:
 	rm -f $(BINARY_PATH)
 
 build:# $(shell find . -name \*.go)
-	# use the -s and -w linker flags to strip the debugging information
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) .
 
-build-windows-amd64:# $(shell find . -name \*.go)
+build-windows-amd64: $(shell find . -name \*.go)
 	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe .
 
 release: clean build build-windows-amd64
-	upx --ultra-brute build/gitime
+	upx --ultra-brute $(BINARY_PATH)
+	upx --ultra-brute $(BINARY_PATH).exe
 
-test:
+test: test-unit
+
+test-all: test-depends test-unit test-acceptance
+
+test-unit:
 	go test `go list ./...`
+
+test-acceptance:
+	test/bats/bin/bats test
+
+test-depends:
+	git submodule update --init --recursive
 
 coverage:
 	go test `go list ./...` -coverprofile=coverage.txt -covermode=atomic
