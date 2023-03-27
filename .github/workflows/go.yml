@@ -27,11 +27,27 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Ls before checkout
+        run: ls -la
+
       - uses: actions/checkout@v3
         with:
           submodules: true
           clean: false
           fetch-depth: 0
+
+#      - name: Clone
+#        uses: GuillaumeFalourd/clone-github-repo-action@v2
+#        with:
+#          owner: 'Goutte'
+#          repository: 'gitime'
+
+      - name: Ls
+        run: ls -la
+
+      - name: Clone
+        run: git clone --recurse-submodules https://github.com/Goutte/gitime cloned
 
       - name: Set up Go
         uses: actions/setup-go@v4
