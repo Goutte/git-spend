@@ -49,6 +49,9 @@ jobs:
       - name: Clone
         run: git clone --recurse-submodules https://github.com/Goutte/gitime cloned
 
+      - name: Fetch
+        run: git fetch origin main
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
