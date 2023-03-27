@@ -29,7 +29,7 @@ clean:
 	rm -f $(BINARY_PATH)
 	rm -f $(BINARY_PATH)-coverage
 	rm -f $(BINARY_PATH).exe
-	rm test-coverage/*
+	rm -f test-coverage/*
 
 build:# $(shell find . -name \*.go)
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) $(SOURCE)
