@@ -90,32 +90,26 @@ You can also exclude merge commits :
 gitime sum --no-merges
 ```
 
-### Read from stdin
 
-You can also parse messages from `stdin` instead of the git log:
+### Restrict to a range of commits
 
-```
-git log > git.log
-cat git.log | gitime sum
-```
-
-
-### Configure the time modulo
-
-If you live somewhere where work hours per week are limited (to 35 for example) 
-in order to mitigate labor oppression tactics from monopoly hoarders,
-you can use environment variables to control how time is "rolled over" between units :
+You can, also restrict to a range of commits, using a commit hash, a tag, or even `HEAD~5`.
 
 ```
-GITIME_HOURS_IN_ONE_DAY=7 gitime sum
+gitime sum --since <ref> --until <ref>
 ```
 
-Here are the available environment variables :
+For example, to get the time spent on the last 15 commits :
 
-- `GITIME_MINUTES_IN_ONE_HOUR` (default: `60`)
-- `GITIME_HOURS_IN_ONE_DAY` (default: `8`)
-- `GITIME_DAYS_IN_ONE_WEEK` (default: `5`)
-- `GITIME_WEEKS_IN_ONE_MONTH` (default: `4`)
+```
+gitime sum --since HEAD~15
+```
+
+Or the time spent on a tag since previous tag :
+
+```
+gitime sum --since 0.1.0 --until 0.1.1
+```
 
 
 Download
@@ -136,6 +130,39 @@ go install github.com/goutte/gitime
 ```
 
 > If that fails, you can install by cloning and running `make install`.
+
+
+Advanced Usage
+--------------
+
+### Read from stdin
+
+You can also parse messages from `stdin` instead of the git log:
+
+```
+git log > git.log
+cat git.log | gitime sum
+```
+
+
+### Configure the time modulo
+
+If you live somewhere where work hours per week are limited (to 35 for example)
+in order to mitigate labor oppression tactics from monopoly hoarders,
+you can use environment variables to control how time is "rolled over" between units :
+
+```
+GITIME_HOURS_IN_ONE_DAY=7 gitime sum
+```
+
+Here are the available environment variables :
+
+- `GITIME_MINUTES_IN_ONE_HOUR` (default: `60`)
+- `GITIME_HOURS_IN_ONE_DAY` (default: `8`)
+- `GITIME_DAYS_IN_ONE_WEEK` (default: `5`)
+- `GITIME_WEEKS_IN_ONE_MONTH` (default: `4`)
+
+
 
 
 Develop
@@ -189,7 +216,9 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 > You can pick and start any, or do something else entirely.
 
 - [x] `gitime sum --since <commit>`
-- [ ] `gitime sum --since <tag>`
+- [x] `gitime sum --since <tag>`
+- [x] `gitime sum --until <ref>`
+- [x] `gitime sum --until <tag>`
 - [ ] `gitime sum --since <datetime>`
 - [ ] `curl install.sh | bash`
 - [ ] flatpak

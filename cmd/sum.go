@@ -13,6 +13,7 @@ import (
 var (
 	FlagAuthors      []string
 	FlagSince        string
+	FlagUntil        string
 	FlagMinutes      bool
 	FlagHours        bool
 	FlagDays         bool
@@ -90,8 +91,22 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 func getRevArgsFromFlags() gitlog.RevArgs {
 	var rev gitlog.RevArgs = nil
 	if FlagSince != "" {
-		rev = &gitlog.Rev{
-			Ref: FlagSince,
+		if FlagUntil != "" {
+			rev = &gitlog.RevRange{
+				New: FlagUntil,
+				Old: FlagSince,
+			}
+		} else {
+			rev = &gitlog.RevRange{
+				New: "HEAD",
+				Old: FlagSince,
+			}
+		}
+	} else {
+		if FlagUntil != "" {
+			rev = &gitlog.Rev{
+				Ref: FlagUntil,
+			}
 		}
 	}
 	return rev
@@ -141,6 +156,9 @@ Meanwhile, you can use --no-merges on git log, like so:
 		}
 		if FlagSince != "" {
 			log.Fatalln(`Flag --since is not supported with stdin parsing.`)
+		}
+		if FlagUntil != "" {
+			log.Fatalln(`Flag --until is not supported with stdin parsing.`)
 		}
 		gitLog = readStdin()
 	} else {
@@ -226,7 +244,13 @@ func addFilterFlags(command *cobra.Command) {
 		&FlagSince,
 		"since",
 		"",
-		"only use commits after this ref (excluding)",
+		"only use commits after this ref (exclusive)",
+	)
+	command.Flags().StringVar(
+		&FlagUntil,
+		"until",
+		"",
+		"only use commits before this ref (inclusive)",
 	)
 }
 

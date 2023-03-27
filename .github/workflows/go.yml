@@ -43,10 +43,19 @@ jobs:
       - name: Generate coverage report
         run: make coverage
 
-      - name: Upload coverage report
+      - name: Generate integration tests coverage report
+        run: make coverage-acceptance
+
+      - name: Upload unit tests coverage report
         uses: codecov/codecov-action@v3
         with:
 #          token: 50ed170f-08b5-4484-97d8-37771615ae42
-          file: ./coverage.txt
+          file: ./coverage-unit.txt
           flags: unittests
 #          name: codecov-umbrella
+
+      - name: Upload integration tests coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage-integration.txt
+          flags: integration

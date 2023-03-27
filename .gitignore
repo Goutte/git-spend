@@ -3,5 +3,9 @@
 build/*
 ^build/README*.md
 
+# Tests
+test-coverage
+coverage*.txt
+
 # IDE
 .idea/*
