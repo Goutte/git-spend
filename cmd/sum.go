@@ -47,7 +47,6 @@ You can also restrict to some commit authors, by name or email:
 func doesStdinHaveData() bool {
 	fileInfo, err := os.Stdin.Stat()
 	if err != nil {
-		fmt.Println("os.Stdin.Stat() failed", err)
 		return false
 	}
 
