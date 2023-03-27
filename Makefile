@@ -4,6 +4,9 @@
 
 .DEFAULT_GOAL := build
 
+# We have a directory named "build", so…
+.PHONY: build
+
 VERSION=$(shell git describe --tags)
 
 run:
@@ -18,16 +21,16 @@ BINARY_PATH=build/gitime
 LD_FLAGS_STRIP=-s -w
 
 clean:
-	rm $(BINARY_PATH)
+	rm -f $(BINARY_PATH)
 
-build: $(shell find . -name \*.go)
+build:# $(shell find . -name \*.go)
 	# use the -s and -w linker flags to strip the debugging information
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) .
 
-build-windows-amd64: $(shell find . -name \*.go)
+build-windows-amd64:# $(shell find . -name \*.go)
 	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe .
 
-release: build build-windows-amd64
+release: clean build build-windows-amd64
 	upx --ultra-brute build/gitime
 
 test:
