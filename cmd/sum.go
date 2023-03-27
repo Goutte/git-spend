@@ -51,8 +51,8 @@ func doesStdinHaveData() bool {
 		return false
 	}
 
-	//if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
-	if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
+	if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
+		//if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
 		return true
 	}
 
