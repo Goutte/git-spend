@@ -55,8 +55,9 @@ func doesStdinHaveData() bool {
 		return false
 	}
 
-	if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
-		//if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
+	// Both yield false positives in CI, careful
+	//if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
+	if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
 		return true
 	}
 

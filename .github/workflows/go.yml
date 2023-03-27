@@ -28,33 +28,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Ls before checkout
-        run: ls -la
-
       - uses: actions/checkout@v3
         with:
           submodules: true
-          clean: false
+#          clean: false
           fetch-depth: 0
 
-#      - name: Clone
-#        uses: GuillaumeFalourd/clone-github-repo-action@v2
-#        with:
-#          owner: 'Goutte'
-#          repository: 'gitime'
-
-      - name: Ls
-        run: ls -la
-
-      - name: Clone
-        run: git clone --recurse-submodules https://github.com/Goutte/gitime cloned
-
-      - name: Fetch
+      - name: Fetch git history and tags (for fixtures)
         run: git fetch --tags origin main
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
+          # Integration testing with coverage requires >=1.20
           go-version: ">=1.20"
 
       - name: Build
@@ -72,9 +58,9 @@ jobs:
       - name: Upload unit tests coverage report
         uses: codecov/codecov-action@v3
         with:
-#          token: 50ed170f-08b5-4484-97d8-37771615ae42
           file: ./coverage-unit.txt
           flags: unittests
+#          token: 50ed170f-08b5-4484-97d8-37771615ae42
 #          name: codecov-umbrella
 
       - name: Upload integration tests coverage report

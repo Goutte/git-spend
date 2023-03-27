@@ -36,16 +36,26 @@ setup() {
     git stash
     git checkout tags/fixture-00 -b fixture-00
     echo "success: ignore the unable to rmdir warning above (benign)"
+
+    git log fixture-00 > fixture-00.log
+    git log 0.1.0 > 0.1.0.log
 }
 
 teardown() {
     rm -rf $TMP_FIXTURE_DIR
+    rm -f fixture-00.log
+    rm -f 0.1.0.log
 }
 
 @test "gitime" {
   run $gitime
   assert_success
   #assert_output --partial 'Gather information about /spent time from commit messages'
+}
+
+@test "gitime hohohoooo" {
+  run $gitime hohohoooo
+  assert_failure
 }
 
 @test "gitime help sum" {
@@ -192,4 +202,48 @@ teardown() {
   run $gitime sum --since 0.1.0 --until 0.1.1
   assert_success
   assert_output "30 minutes"
+}
+
+@test "gitime sum using stdin" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat fixture-00.log | $gitime sum"
+#  run $gitime sum < fixture-00.log
+  assert_success
+  assert_output "1 week 3 hours"
+}
+
+@test "gitime sum using another stdin" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat 0.1.0.log | $gitime sum"
+#  run bash -c "$gitime sum < 0.1.0.log"
+  assert_success
+  assert_output "1 day 7 hours 57 minutes"
+}
+
+@test "gitime sum using stdin does not accept --no-merges" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat fixture-00.log | $gitime sum --no-merges"
+#  run bash -c "$gitime sum --no-merges < fixture-00.log"
+  assert_failure
+}
+
+@test "gitime sum using stdin does not accept --author" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat fixture-00.log | $gitime sum --author Goutte"
+#  run bash -c "$gitime sum --author Goutte < fixture-00.log"
+  assert_failure
+}
+
+@test "gitime sum using stdin does not accept --since" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat fixture-00.log | $gitime sum --since 0.1.0"
+#  run bash -c "$gitime sum --since 0.1.0 < fixture-00.log"
+  assert_failure
+}
+
+@test "gitime sum using stdin does not accept --until" {
+  export GITIME_NO_STDIN=0
+  run bash -c "cat fixture-00.log | $gitime sum --until 0.1.0"
+#  r0un bash -c "$gitime sum --until 0.1.0 < fixture-00.log"
+  assert_failure
 }
