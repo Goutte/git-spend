@@ -23,6 +23,8 @@ setup() {
       gitime="${gitime}-coverage"
     fi
 
+    export GITIME_NO_STDIN=1
+
     # We use gitime's own repo as fixture.
     # We copy this project into a temporary dir (in RAM),
     # check out the appropriate fixture-XX tag,
