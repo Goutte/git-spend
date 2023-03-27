@@ -188,12 +188,12 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 
 > You can pick and start any, or do something else entirely.
 
-- `gitime sum --since <commit>`
-- `gitime sum --since <tag>`
-- `gitime sum --since <datetime>`
-- `curl install.sh | bash`
-- flatpak
-- git extension
-- docker
-- i18n _(godspeed)_
-- Right-To-Left _(help)_
+- [x] `gitime sum --since <commit>`
+- [ ] `gitime sum --since <tag>`
+- [ ] `gitime sum --since <datetime>`
+- [ ] `curl install.sh | bash`
+- [ ] flatpak
+- [ ] git extension
+- [ ] docker
+- [ ] i18n _(godspeed)_
+- [ ] Right-To-Left _(help)_

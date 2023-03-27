@@ -12,6 +12,7 @@ import (
 
 var (
 	FlagAuthors      []string
+	FlagSince        string
 	FlagMinutes      bool
 	FlagHours        bool
 	FlagDays         bool
@@ -86,15 +87,26 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
+func getRevArgsFromFlags() gitlog.RevArgs {
+	var rev gitlog.RevArgs = nil
+	if FlagSince != "" {
+		rev = &gitlog.Rev{
+			Ref: FlagSince,
+		}
+	}
+	return rev
+}
+
 // ReadGitLog reads the git log of the repository of the specified directpry
 func ReadGitLog(onlyAuthors []string, excludeMerge bool, directory string) string {
 	git := gitlog.New(&gitlog.Config{
 		Path: directory,
 	})
+	rev := getRevArgsFromFlags()
 	params := &gitlog.Params{
 		IgnoreMerges: excludeMerge,
 	}
-	commits, err := git.Log(nil, params)
+	commits, err := git.Log(rev, params)
 	if err != nil {
 		log.Fatalln("Cannot read git log:", err)
 	}
@@ -126,6 +138,9 @@ Meanwhile, you can use --author on git log, like so:
 Meanwhile, you can use --no-merges on git log, like so:
 
     git log --no-merges > log.log && cat log.log | gitime sum`)
+		}
+		if FlagSince != "" {
+			log.Fatalln(`Flag --since is not supported with stdin parsing.`)
 		}
 		gitLog = readStdin()
 	} else {
@@ -206,6 +221,12 @@ func addFilterFlags(command *cobra.Command) {
 		"no-merges",
 		false,
 		"ignore merge commits",
+	)
+	command.Flags().StringVar(
+		&FlagSince,
+		"since",
+		"",
+		"only use commits after this ref (excluding)",
 	)
 }
 

@@ -9,16 +9,20 @@
 
 VERSION=$(shell git describe --tags)
 
+BINARY_PATH=build/gitime
+
+# Use the -s and -w linker flags to strip the debugging information
+LD_FLAGS_STRIP=-s -w
+
+
+depend:
+	go get
+
 run:
 	go run main.go
 
 sum:
 	go run main.go sum
-
-BINARY_PATH=build/gitime
-
-# Use the -s and -w linker flags to strip the debugging information
-LD_FLAGS_STRIP=-s -w
 
 clean:
 	rm -f $(BINARY_PATH)
@@ -35,7 +39,7 @@ release: clean build build-windows-amd64
 
 test: test-unit
 
-test-all: test-depends test-unit test-acceptance
+test-all: test-depend test-unit test-acceptance
 
 test-unit:
 	go test `go list ./...`
@@ -43,7 +47,7 @@ test-unit:
 test-acceptance:
 	test/bats/bin/bats test
 
-test-depends:
+test-depend:
 	git submodule update --init --recursive
 
 coverage:
