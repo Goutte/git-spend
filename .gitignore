@@ -2,6 +2,7 @@
 # Build
 build/*
 ^build/README*.md
+.flatpak-builder
 
 # Tests
 test-coverage

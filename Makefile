@@ -26,9 +26,11 @@ sum:
 	go run main.go sum
 
 clean:
-	rm -f $(BINARY_PATH)
-	rm -f $(BINARY_PATH)-coverage
-	rm -f $(BINARY_PATH).exe
+	rm -f "$(BINARY_PATH)"
+	rm -f "$(BINARY_PATH).upx"
+	rm -f "$(BINARY_PATH)-coverage"
+	rm -f "$(BINARY_PATH).exe"
+	rm -f "$(BINARY_PATH).000"
 	rm -f test-coverage/*
 
 build:# $(shell find . -name \*.go)

@@ -1,0 +1,32 @@
+# Flatpak manifest
+# https://docs.flatpak.org/en/latest/first-build.html
+
+# Setup
+# -----
+# apt install flatpak flatpak-builder
+# flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+# flatpak install flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
+# echo export 'XDG_DATA_DIRS="$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:$XDG_DATA_DIRS"' >> ~/.xsessionrc
+
+# Build
+# -----
+# make release
+# flatpak-builder --user --install --force-clean build/flatpak packaging/com.github.goutte.Gitime.yml
+# flatpak run io.github.goutte.Gitime sum
+# > cannot read git log: "git" does not exists
+# …
+# So we need Git and perhaps also filesystem access (either via file chooser → preferred ; or global), before publishing.
+
+app-id: io.github.goutte.Gitime
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+command: gitime
+modules:
+  - name: gitime
+    buildsystem: simple
+    build-commands:
+      - install -D gitime /app/bin/gitime
+    sources:
+      - type: file
+        path: ../build/gitime

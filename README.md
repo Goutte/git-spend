@@ -15,12 +15,16 @@ Purpose
 
 Collect, addition and return all the `/spend` and `/spent` time-tracking directives in git commit messages.
 
-> This looks at the `git log` of the currently checked out branch of the working directory.
+> This looks at the `git log` of the currently checked out branch of the working directory,
+> and therefore requires `git` to be installed on your system.
 
-**TLDR; JUST [DOWNLOAD LINUX/MAC](https://github.com/Goutte/gitime/releases/latest/download/gitime) — [DOWNLOAD WINDOWS](https://github.com/Goutte/gitime/releases/latest/download/gitime.exe)**
+**TLDR; JUST [DOWNLOAD LINUX/MAC] — [DOWNLOAD WINDOWS]**
+
+[DOWNLOAD LINUX/MAC]: https://github.com/Goutte/gitime/releases/latest/download/gitime
+[DOWNLOAD WINDOWS]: https://github.com/Goutte/gitime/releases/latest/download/gitime.exe
 
 
-### Example of a parsed commit
+### By Example
 
 Say you are in the directory of a project with one commit like so :
 
@@ -38,7 +42,7 @@ $ gitime sum
 would yield:
 > `1 day 2 hours 30 minutes`
 
-Of course, _gitime_ really shines when you have multiple commits with `/spend` commands that you want to sum.
+Of course, _gitime_ really shines when you have multiple commits with `/spend` commands that you want to tally and sum.
 
 
 ### Specifications
@@ -134,11 +138,13 @@ gitime sum --since 2023-03-21
 gitime sum --since "2023-03-21 13:37:00"
 ```
 
-> Other supported time formats: [`RFC3339`], `RFC822`, `RFC850`.
+> Other supported time formats: [`RFC3339`], [`RFC822`], [`RFC850`].
 > If you need a specific timezone, try setting the `TZ` environment variable:
 > `TZ="Europe/Paris" gitime sum --since 2023-03-21`
 
 [`RFC3339`]: https://www.rfc-editor.org/rfc/rfc3339
+[`RFC822`]: https://www.w3.org/Protocols/rfc822/
+[`RFC850`]: https://www.rfc-editor.org/rfc/rfc850
 
 
 Download
@@ -192,8 +198,6 @@ Here are the available environment variables :
 - `GITIME_WEEKS_IN_ONE_MONTH` (default: `4`)
 
 
-
-
 Develop
 -------
 
@@ -244,8 +248,10 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 
 > You can pick and start any, or do something else entirely.
 
-- [ ] `curl install.sh | bash`
-- [ ] flatpak
+- [ ] `curl install.sh | sudo sh`?
+- [ ] `gitime sum --format <custom format>`
+- [ ] `gitime sum --short` → `1d3h27m`
+- [ ] flatpak (road blocked, see [`packaging/`](./packaging))
 - [ ] git extension
 - [ ] docker
 - [ ] i18n _(godspeed)_
