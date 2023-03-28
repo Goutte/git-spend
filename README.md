@@ -109,7 +109,7 @@ gitime sum --no-merges
 
 ### Restrict to a range of commits
 
-You can, also restrict to a range of commits, using a commit hash, a tag, or even `HEAD~N`.
+You can restrict to a range of commits, using a commit hash, a tag, or even `HEAD~N`.
 
 ```
 gitime sum --since <ref> --until <ref>
@@ -134,9 +134,11 @@ gitime sum --since 2023-03-21
 gitime sum --since "2023-03-21 13:37:00"
 ```
 
-> Other supported time formats: `RFC3339`, `RFC822`, `RFC850`.
+> Other supported time formats: [`RFC3339`], `RFC822`, `RFC850`.
 > If you need a specific timezone, try setting the `TZ` environment variable:
-> `export TZ="Europe/Paris"` for example.
+> `TZ="Europe/Paris" gitime sum --since 2023-03-21`
+
+[`RFC3339`]: https://www.rfc-editor.org/rfc/rfc3339
 
 
 Download
