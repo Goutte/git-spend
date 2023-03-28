@@ -19,6 +19,8 @@ setup() {
     COVERAGE_DIR=${PROJECT_DIR}/test-coverage
     gitime=${PROJECT_DIR}/build/gitime
 
+    cd "${PROJECT_DIR}" || exit
+
     if [ "$GITIME_COVERAGE" == "1" ] ; then
       echo "Setting up coverage in ${COVERAGE_DIR}"
       mkdir -p "${COVERAGE_DIR}"
@@ -30,13 +32,13 @@ setup() {
     export TZ="Europe/Paris"
 
     cp -R "$PROJECT_DIR" "$TMP_FIXTURE_DIR"
-    cd "$TMP_FIXTURE_DIR" || exit
+    cd "${TMP_FIXTURE_DIR}" || exit
 
     git stash
     git checkout tags/fixture-00 -b fixture-00
     echo "success: ignore the unable to rmdir warning above (benign)"
 
-    git log fixture-00 > fixture-00.log
+    git log > fixture-00.log
     git log 0.1.0 > 0.1.0.log
 }
 
@@ -101,6 +103,13 @@ teardown() {
   run $gitime sum --months
   assert_success
   assert_output "0"
+}
+
+@test "gitime sum unit formats are mutually exclusive" {
+  run $gitime sum --months --days
+  assert_failure
+  run $gitime sum --hours --minutes --weeks
+  assert_failure
 }
 
 @test "gitime sum --author Goutte" {

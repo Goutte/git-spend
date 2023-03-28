@@ -207,6 +207,14 @@ collect:
     expected:
       minutes: 180
 
+  - rule: Tolerate leading whitespaces (    /spend 11m)
+    message: |
+      feat: amazing tolerance
+          /spend 11m
+      Respecting the tolerance paradox.
+    expected:
+      minutes: 11
+
   - rule: Cumulate multiple /spend directives
     message: |
       feat: merging a bunch of things

@@ -128,6 +128,14 @@ func addFormatFlags(command *cobra.Command) {
 		false,
 		"show sum in months",
 	)
+
+	command.MarkFlagsMutuallyExclusive(
+		"months",
+		"weeks",
+		"days",
+		"hours",
+		"minutes",
+	)
 }
 
 func addFilterFlags(command *cobra.Command) {
