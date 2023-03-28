@@ -27,6 +27,7 @@ setup() {
     fi
 
     export GITIME_NO_STDIN=1
+    export TZ="Europe/Paris"
 
     cp -R "$PROJECT_DIR" "$TMP_FIXTURE_DIR"
     cd "$TMP_FIXTURE_DIR" || exit
