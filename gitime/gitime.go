@@ -1,7 +1,6 @@
 package gitime
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -72,12 +71,7 @@ func extractTimeComponent(matches []string, r *regexp.Regexp, component string) 
 			componentString = matches[componentIndex]
 		}
 	}
-	componentFloat, err := strconv.ParseFloat(componentString, 64)
-	if err != nil {
-		// this should never happen unless weeksRegex fiddle with and break our regexes
-		fmt.Println("cannot parse", component, componentString, r.String())
-		return 0
-	}
+	componentFloat, _ := strconv.ParseFloat(componentString, 64)
 
 	return componentFloat
 }
