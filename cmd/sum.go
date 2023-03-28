@@ -3,12 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/goutte/gitime/gitime"
+	"github.com/goutte/gitime/gitime/reader"
 	"github.com/spf13/cobra"
-	"github.com/tsuyoshiwada/go-gitlog"
-	"io"
 	"log"
-	"os"
-	"time"
 )
 
 var (
@@ -40,36 +37,9 @@ You can also restrict to some commit authors, by name or email:
 
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		ts := Sum(FlagAuthors, FlagExcludeMerge).Normalize()
+		ts := Sum(FlagAuthors, FlagExcludeMerge, FlagSince, FlagUntil).Normalize()
 		fmt.Println(formatTimeSpent(ts))
 	},
-}
-
-func doesStdinHaveData() bool {
-	fileInfo, err := os.Stdin.Stat()
-	if err != nil {
-		return false
-	}
-
-	if os.Getenv("GITIME_NO_STDIN") == "1" {
-		return false
-	}
-
-	// Both yield false positives in CI, careful
-	//if (fileInfo.Mode() & os.ModeCharDevice) == 0 { // alternatively?
-	if (fileInfo.Mode() & os.ModeNamedPipe) != 0 {
-		return true
-	}
-
-	return false
-}
-
-func readStdin() string {
-	stdin, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return fmt.Sprintf("%s", stdin)
 }
 
 func formatTimeSpent(ts *gitime.TimeSpent) string {
@@ -93,119 +63,9 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func parseTimePerhaps(input string) *time.Time {
-	if input == "" {
-		return nil
-	}
-
-	layouts := []string{
-		time.RFC3339,
-		time.DateTime,
-		time.DateOnly,
-		time.RFC822,
-		time.RFC850,
-	}
-
-	for _, layout := range layouts {
-		parse, err := time.Parse(layout, input)
-		if err == nil {
-			return &parse
-		}
-	}
-
-	return nil
-}
-
-func getRevArgsFromFlags() gitlog.RevArgs {
-	var rev gitlog.RevArgs = nil
-	if FlagSince != "" {
-		flagSinceDate := parseTimePerhaps(FlagSince)
-
-		if FlagUntil != "" {
-			flagUntilDate := parseTimePerhaps(FlagUntil)
-
-			if flagUntilDate != nil {
-				if flagSinceDate != nil {
-					rev = &gitlog.RevTime{
-						Since: *flagSinceDate,
-						Until: *flagUntilDate,
-					}
-				} else {
-					fmt.Println("you cannot mix dates and refs in --until and --since")
-					os.Exit(1)
-				}
-			} else {
-				if flagSinceDate != nil {
-					fmt.Println("you cannot mix dates and refs in --since and --until")
-					os.Exit(1)
-				} else {
-					rev = &gitlog.RevRange{
-						New: FlagUntil,
-						Old: FlagSince,
-					}
-				}
-			}
-		} else {
-			if flagSinceDate != nil {
-				rev = &gitlog.RevTime{
-					Since: *flagSinceDate,
-				}
-			} else {
-				rev = &gitlog.RevRange{
-					New: "HEAD",
-					Old: FlagSince,
-				}
-			}
-		}
-	} else {
-		if FlagUntil != "" {
-			flagUntilDate := parseTimePerhaps(FlagUntil)
-			if flagUntilDate != nil {
-				rev = &gitlog.RevTime{
-					Until: *flagUntilDate,
-				}
-			} else {
-				rev = &gitlog.Rev{
-					Ref: FlagUntil,
-				}
-			}
-		}
-	}
-	return rev
-}
-
-// ReadGitLog reads the git log of the repository of the specified directpry
-func ReadGitLog(onlyAuthors []string, excludeMerge bool, directory string) string {
-	git := gitlog.New(&gitlog.Config{
-		Path: directory,
-	})
-	rev := getRevArgsFromFlags()
-	params := &gitlog.Params{
-		IgnoreMerges: excludeMerge,
-	}
-	commits, err := git.Log(rev, params)
-	if err != nil {
-		fmt.Println("Cannot read git log:", err)
-		os.Exit(1)
-		//log.Fatalln("Cannot read git log:", err)
-	}
-
-	s := ""
-	for _, commit := range commits {
-		if !isCommitByAnyAuthor(commit, onlyAuthors) {
-			continue
-		}
-
-		s += commit.Subject + "\n"
-		s += commit.Body + "\n"
-	}
-
-	return s
-}
-
-func Sum(onlyAuthors []string, excludeMerge bool) *gitime.TimeSpent {
+func Sum(onlyAuthors []string, excludeMerge bool, since string, until string) *gitime.TimeSpent {
 	var gitLog string
-	if doesStdinHaveData() {
+	if reader.DoesStdinHaveData() {
 		if len(onlyAuthors) > 0 {
 			log.Fatalln(`Flag --author is not supported with stdin parsing.
 Meanwhile, you can use --author on git log, like so:
@@ -224,33 +84,12 @@ Meanwhile, you can use --no-merges on git log, like so:
 		if FlagUntil != "" {
 			log.Fatalln(`Flag --until is not supported with stdin parsing.`)
 		}
-		gitLog = readStdin()
+		gitLog = reader.ReadStdin()
 	} else {
-		gitLog = ReadGitLog(onlyAuthors, excludeMerge, ".")
+		gitLog = reader.ReadGitLog(onlyAuthors, excludeMerge, since, until, ".")
 	}
 
 	return gitime.CollectTimeSpent(gitLog)
-}
-
-func isCommitByAnyAuthor(commit *gitlog.Commit, authors []string) bool {
-	if len(authors) == 0 {
-		return true
-	}
-
-	if commit.Author == nil {
-		return false
-	}
-
-	for _, author := range authors {
-		if commit.Author.Name == author {
-			return true
-		}
-		if commit.Author.Email == author {
-			return true
-		}
-	}
-
-	return false
 }
 
 func addFormatFlags(command *cobra.Command) {
