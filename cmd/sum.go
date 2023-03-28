@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/goutte/gitime/gitime"
-	"github.com/goutte/gitime/gitime/reader"
+	"github.com/goutte/git-spend/gitime"
+	"github.com/goutte/git-spend/gitime/reader"
 	"github.com/spf13/cobra"
 	"log"
 )
@@ -30,11 +30,11 @@ of the git repository of the current working directory.
 
 You can also get a raw number in a specific unit:
 
-    gitime sum --minutes
+    git-spend sum --minutes
 
 You can also restrict to some commit authors, by name or email:
 
-    gitime sum --author=Alice --author=bob@pop.net --author=Eve
+    git-spend sum --author=Alice --author=bob@pop.net --author=Eve
 
 `,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -71,13 +71,13 @@ func Sum(onlyAuthors []string, excludeMerge bool, since string, until string) *g
 			log.Fatalln(`Flag --author is not supported with stdin parsing.
 Meanwhile, you can use --author on git log, like so:
 
-    git log --author Bob > log.log && cat log.log | gitime sum`)
+    git log --author Bob > log.log && cat log.log | git-spend sum`)
 		}
 		if excludeMerge {
 			log.Fatalln(`Flag --no-merges is not supported with stdin parsing.
 Meanwhile, you can use --no-merges on git log, like so:
 
-    git log --no-merges > log.log && cat log.log | gitime sum`)
+    git log --no-merges > log.log && cat log.log | git-spend sum`)
 		}
 		if FlagSince != "" {
 			log.Fatalln(`Flag --since is not supported with stdin parsing.`)

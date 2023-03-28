@@ -1,4 +1,4 @@
-module github.com/goutte/gitime
+module github.com/goutte/git-spend
 
 go 1.20
 

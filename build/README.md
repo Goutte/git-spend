@@ -1,1 +1,1 @@
-Your build files (`gitime`) will appear here when you `make`.
+Your build files (`git-spend`) will appear here when you `make`.

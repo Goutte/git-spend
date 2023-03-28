@@ -9,7 +9,7 @@
 
 VERSION=$(shell git describe --tags)
 
-BINARY_PATH=build/gitime
+BINARY_PATH=build/git-spend
 SOURCE=.
 
 # Use the -s and -w linker flags to strip the debugging information
@@ -38,7 +38,7 @@ build:# $(shell find . -name \*.go)
 
 build-coverage:
 	go build -cover -o $(BINARY_PATH)-coverage $(SOURCE)
-#		-coverpkg github.com/goutte/gitime,github.com/goutte/gitime/gitime,github.com/goutte/gitime/cmd \
+#		-coverpkg github.com/goutte/git-spend,github.com/goutte/git-spend/git-spend,github.com/goutte/git-spend/cmd \
 
 build-windows-amd64: $(shell find . -name \*.go)
 	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe $(SOURCE)
@@ -64,11 +64,11 @@ coverage:
 	go test `go list ./...` -coverprofile=coverage-unit.txt -covermode=atomic
 
 coverage-acceptance: clean build-coverage
-	GITIME_COVERAGE=1 test/bats/bin/bats test
+	GIT_SPEND_COVERAGE=1 test/bats/bin/bats test
 	go tool covdata textfmt -i=test-coverage/ -o coverage-integration.txt
 
 install: build
-	sudo install build/gitime /usr/local/bin/
+	sudo install build/git-spend /usr/local/bin/
 
 install-release: release
-	sudo install build/gitime /usr/local/bin/
+	sudo install build/git-spend /usr/local/bin/

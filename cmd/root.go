@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/goutte/gitime/gitime"
+	"github.com/goutte/git-spend/gitime"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -10,7 +10,7 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "gitime",
+		Use:   "git-spend",
 		Short: "Sum up your /spent time on commits",
 		Long:  `Gather information about /spent time from commit messages.`,
 	}
@@ -25,7 +25,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Might use a config file as well at some point for things like DaysInOneWeek
-	//rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.gitime.yaml)")
+	//rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.git-spend.yaml)")
 
 	// Snippets for viper config
 	//rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
@@ -43,10 +43,10 @@ func initConfig() {
 	cobra.CheckErr(err)
 	viper.AddConfigPath(home)
 	viper.SetConfigType("yaml")
-	viper.SetConfigName(".gitime")
+	viper.SetConfigName(".git-spend")
 	//}
 
-	viper.SetEnvPrefix("gitime")
+	viper.SetEnvPrefix("git_spend")
 	viper.AutomaticEnv()
 
 	_ = viper.ReadInConfig()

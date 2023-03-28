@@ -10,7 +10,7 @@ These are the time modulo constants that Gitlab uses.
 
 These values may be set to another value at runtime using ENV variables, eg:
 
-	GITIME_HOURS_IN_ONE_DAY=7 gitime sum
+	GIT_SPEND_HOURS_IN_ONE_DAY=7 git-spend sum
 
 */
 

@@ -11,22 +11,22 @@
 # Build
 # -----
 # make release
-# flatpak-builder --user --install --force-clean build/flatpak packaging/com.github.goutte.Gitime.yml
-# flatpak run io.github.goutte.Gitime sum
+# flatpak-builder --user --install --force-clean build/flatpak packaging/com.github.goutte.Gitspend.yml
+# flatpak run io.github.goutte.Gitspend sum
 # > cannot read git log: "git" does not exists
 # …
 # So we need Git and perhaps also filesystem access (either via file chooser → preferred ; or global), before publishing.
 
-app-id: io.github.goutte.Gitime
+app-id: io.github.goutte.Gitspend
 runtime: org.freedesktop.Platform
 runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
-command: gitime
+command: git-spend
 modules:
-  - name: gitime
+  - name: git-spend
     buildsystem: simple
     build-commands:
-      - install -D gitime /app/bin/gitime
+      - install -D git-spend /app/bin/git-spend
     sources:
       - type: file
-        path: ../build/gitime
+        path: ../build/git-spend

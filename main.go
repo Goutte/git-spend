@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/goutte/gitime/cmd"
+	"github.com/goutte/git-spend/cmd"
 	"log"
 )
 

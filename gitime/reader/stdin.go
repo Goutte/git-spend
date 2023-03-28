@@ -13,7 +13,7 @@ func DoesStdinHaveData() bool {
 		return false
 	}
 
-	if os.Getenv("GITIME_NO_STDIN") == "1" {
+	if os.Getenv("GIT_SPEND_NO_STDIN") == "1" {
 		return false
 	}
 
