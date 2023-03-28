@@ -35,10 +35,10 @@ clean:
 
 build:# $(shell find . -name \*.go)
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) $(SOURCE)
+	echo "Your very own copy of git-spend is available here: $(BINARY_PATH)"
 
 build-coverage:
 	go build -cover -o $(BINARY_PATH)-coverage $(SOURCE)
-#		-coverpkg github.com/goutte/git-spend,github.com/goutte/git-spend/git-spend,github.com/goutte/git-spend/cmd \
 
 build-windows-amd64: $(shell find . -name \*.go)
 	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe $(SOURCE)
@@ -54,10 +54,10 @@ test-all: test-depend test-unit test-acceptance
 test-unit:
 	go test `go list ./...`
 
-test-acceptance: build
+test-acceptance: build test-acceptance-depend
 	test/bats/bin/bats test
 
-test-depend:
+test-acceptance-depend:
 	git submodule update --init --recursive
 
 coverage:

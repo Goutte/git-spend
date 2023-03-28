@@ -293,7 +293,7 @@ setup() {
 
     cd "${PROJECT_DIR}" || exit
 
-    if [ "$git_spend_COVERAGE" == "1" ] ; then
+    if [ "$GIT_SPEND_COVERAGE" == "1" ] ; then
       echo "Setting up coverage in ${COVERAGE_DIR}"
       mkdir -p "${COVERAGE_DIR}"
       export GOCOVERDIR=${COVERAGE_DIR}
