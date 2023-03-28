@@ -1,52 +1,17 @@
 #!/usr/bin/env bats
 
+# Acceptance test suite, made with BATS.
 # https://github.com/bats-core/bats-core
 # Run:
 #     make test-acceptance
 
-# We use gitime's own repo as fixture.
+# We use gitime's own repo as fixture for tests.
 # We copy this project into a temporary fixture dir (in RAM),
 # and then have it check out the appropriate fixture-XX tag,
 # and finally run integration testing on that temporary repo.
+# See the setup() BATS hook defined at the bottom of this file.
+# THIS DIRECTORY WILL BE `RM -RF` SO BEWARE OF WHAT'S IN HERE.
 TMP_FIXTURE_DIR="/tmp/gitime-test"
-
-setup() {
-    load 'test_helper/bats-support/load'
-    load 'test_helper/bats-assert/load'
-
-    TESTS_DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
-    PROJECT_DIR="$( dirname "$TESTS_DIR" )"
-    COVERAGE_DIR=${PROJECT_DIR}/test-coverage
-    gitime=${PROJECT_DIR}/build/gitime
-
-    cd "${PROJECT_DIR}" || exit
-
-    if [ "$GITIME_COVERAGE" == "1" ] ; then
-      echo "Setting up coverage in ${COVERAGE_DIR}"
-      mkdir -p "${COVERAGE_DIR}"
-      export GOCOVERDIR=${COVERAGE_DIR}
-      gitime="${gitime}-coverage"
-    fi
-
-    export GITIME_NO_STDIN=1
-    export TZ="Europe/Paris"
-
-    cp -R "$PROJECT_DIR" "$TMP_FIXTURE_DIR"
-    cd "${TMP_FIXTURE_DIR}" || exit
-
-    git stash
-    git checkout tags/fixture-00 -b fixture-00
-    echo "success: ignore the unable to rmdir warning above (benign)"
-
-    git log > fixture-00.log
-    git log 0.1.0 > 0.1.0.log
-}
-
-teardown() {
-    rm -rf $TMP_FIXTURE_DIR
-    rm -f fixture-00.log
-    rm -f 0.1.0.log
-}
 
 @test "gitime" {
   run $gitime
@@ -73,6 +38,18 @@ teardown() {
   run $gitime sum
   assert_success
   assert_output "1 week 3 hours"
+}
+
+@test "gitime sum --target <dir>" {
+  cd "${PROJECT_DIR}"
+  run $gitime sum --target "${TMP_FIXTURE_DIR}"
+  assert_success
+  assert_output "1 week 3 hours"
+}
+
+@test "gitime sum --target <404 dir> should fail" {
+  run $gitime sum --target "/to/code/or/not/to/code"
+  assert_failure
 }
 
 @test "gitime sum --minutes" {
@@ -213,7 +190,6 @@ teardown() {
 }
 
 @test "gitime sum --since <date>" {
-  # Sun Mar 26 22:11:03 2023 of 4527140510c2b77a9f2a6eb947b5391d4e2173a9
   run $gitime sum --since 2023-03-27
   assert_success
   assert_output "2 hours"
@@ -223,7 +199,7 @@ teardown() {
   run $gitime sum --since "2023-03-26 22:15:00"
   assert_success
   assert_output "2 hours 1 minute"
-  # We'd want, but no cigar ; time parsing in Golang is quite weird
+  # Want to tolerate missing minutes, but no cigar ; time parsing in Golang is quite peculiar
   #run $gitime sum --since "2023-03-26 22:15"
   #assert_success
 }
@@ -302,4 +278,45 @@ teardown() {
   run bash -c "cat fixture-00.log | $gitime sum --until 0.1.0"
 #  r0un bash -c "$gitime sum --until 0.1.0 < fixture-00.log"
   assert_failure
+}
+
+# ---
+
+setup() {
+    load 'test_helper/bats-support/load'
+    load 'test_helper/bats-assert/load'
+
+    TESTS_DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
+    PROJECT_DIR="$( dirname "$TESTS_DIR" )"
+    COVERAGE_DIR=${PROJECT_DIR}/test-coverage
+    gitime=${PROJECT_DIR}/build/gitime
+
+    cd "${PROJECT_DIR}" || exit
+
+    if [ "$GITIME_COVERAGE" == "1" ] ; then
+      echo "Setting up coverage in ${COVERAGE_DIR}"
+      mkdir -p "${COVERAGE_DIR}"
+      export GOCOVERDIR=${COVERAGE_DIR}
+      gitime="${gitime}-coverage"
+    fi
+
+    # CI buffers unwanted data in stdin, so let's just disable stdin for most tests
+    export GITIME_NO_STDIN=1
+    export TZ="Europe/Paris"
+
+    cp -R "${PROJECT_DIR}" "${TMP_FIXTURE_DIR}"
+    cd "${TMP_FIXTURE_DIR}" || exit
+
+    git stash
+    git checkout tags/fixture-00 -b fixture-00
+    echo "success: ignore the unable to rmdir warning above (benign)"
+
+    git log > fixture-00.log
+    git log 0.1.0 > 0.1.0.log
+}
+
+teardown() {
+    rm -rf $TMP_FIXTURE_DIR
+    rm -f fixture-00.log
+    rm -f 0.1.0.log
 }

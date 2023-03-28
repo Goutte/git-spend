@@ -15,12 +15,14 @@ Purpose
 
 Collect, addition and return all the `/spend` and `/spent` time-tracking directives in git commit messages.
 
-> This only looks at the `git log` of the currently checked out branch.
+> This looks at the `git log` of the currently checked out branch of the working directory.
 
 **TLDR; JUST [DOWNLOAD LINUX/MAC](https://github.com/Goutte/gitime/releases/latest/download/gitime) — [DOWNLOAD WINDOWS](https://github.com/Goutte/gitime/releases/latest/download/gitime.exe)**
 
 
 ### Example of a parsed commit
+
+Say you are in the directory of a project with one commit like so :
 
 ```
 feat(crunch): implement a nice feature
@@ -53,11 +55,23 @@ The [acceptance testing suite](./test/features.bats) also holds many usage examp
 Usage
 -----
 
-Go into your git-versioned project's directory, and run:
+Go into your git-versioned project's directory:
 
 ```
 cd <some git versioned project with commits using /spend directives>
+```
+
+and run:
+
+```
 gitime sum
+```
+> `2 days 1 hour 42 minutes`
+
+Or run `gitime` from anywhere, but specify the `--target` directory (which defaults to `.`):
+
+```
+gitime sum --target <some git versioned project dir>
 ```
 > `2 days 1 hour 42 minutes`
 
@@ -95,13 +109,13 @@ gitime sum --no-merges
 
 ### Restrict to a range of commits
 
-You can, also restrict to a range of commits, using a commit hash, a tag, or even `HEAD~5`.
+You can, also restrict to a range of commits, using a commit hash, a tag, or even `HEAD~N`.
 
 ```
 gitime sum --since <ref> --until <ref>
 ```
 
-For example, to get the time spent on the last 15 commits :
+For example, to get the time spent on the last `15` commits :
 
 ```
 gitime sum --since HEAD~15
@@ -116,10 +130,13 @@ gitime sum --since 0.1.0 --until 0.1.1
 You can also use _dates_ and _datetimes_, but remember to quote them if you specify the time:
 
 ```
-gitime sum --since "21-03-2023 13:37:00"
+gitime sum --since 2023-03-21
+gitime sum --since "2023-03-21 13:37:00"
 ```
 
-> Other supported time formats: `RFC3339`, `RFC822`, `RFC850`,
+> Other supported time formats: `RFC3339`, `RFC822`, `RFC850`.
+> If you need a specific timezone, try setting the `TZ` environment variable:
+> `export TZ="Europe/Paris"` for example.
 
 
 Download

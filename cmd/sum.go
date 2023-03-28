@@ -10,6 +10,7 @@ import (
 
 var (
 	FlagAuthors      []string
+	FlagTarget       string
 	FlagSince        string
 	FlagUntil        string
 	FlagMinutes      bool
@@ -86,7 +87,7 @@ Meanwhile, you can use --no-merges on git log, like so:
 		}
 		gitLog = reader.ReadStdin()
 	} else {
-		gitLog = reader.ReadGitLog(onlyAuthors, excludeMerge, since, until, ".")
+		gitLog = reader.ReadGitLog(onlyAuthors, excludeMerge, since, until, FlagTarget)
 	}
 
 	return gitime.CollectTimeSpent(gitLog)
@@ -165,8 +166,18 @@ func addFilterFlags(command *cobra.Command) {
 	)
 }
 
+func addTargetFlags(command *cobra.Command) {
+	command.Flags().StringVar(
+		&FlagTarget,
+		"target",
+		".",
+		"target this directory instead of the working directory (.)",
+	)
+}
+
 func init() {
 	rootCmd.AddCommand(sumCmd)
 	addFormatFlags(sumCmd)
 	addFilterFlags(sumCmd)
+	addTargetFlags(sumCmd)
 }
