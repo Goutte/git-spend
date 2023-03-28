@@ -244,6 +244,13 @@ teardown() {
   assert_failure
 }
 
+@test "gitime sum without stdin" {
+  export GITIME_NO_STDIN=0
+  run bash -c "$gitime sum"
+  assert_success
+  assert_output "1 week 3 hours"
+}
+
 @test "gitime sum using stdin" {
   export GITIME_NO_STDIN=0
   run bash -c "cat fixture-00.log | $gitime sum"
