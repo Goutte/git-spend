@@ -47,6 +47,8 @@ These can be configured at runtime if needed, using environment variables.
 The **complete specification** can be found in [the rules](./gitime/gitime_test_data.yaml) of the test data,
 and in excruciating detail in [the grammar](./gitime/grammar.go).
 
+The [acceptance testing suite](./test/features.bats) also holds many usage examples.
+
 
 Usage
 -----
@@ -57,7 +59,7 @@ Go into your git-versioned project's directory, and run:
 cd <some git versioned project with commits using /spend directives>
 gitime sum
 ```
-> `> 2 days 1 hour 42 minutes`
+> `2 days 1 hour 42 minutes`
 
 
 ### Format the output
@@ -110,6 +112,14 @@ Or the time spent on a tag since previous tag :
 ```
 gitime sum --since 0.1.0 --until 0.1.1
 ```
+
+You can also use _dates_ and _datetimes_, but remember to quote them if you specify the time:
+
+```
+gitime sum --since "21-03-2023 13:37:00"
+```
+
+> Other supported time formats: `RFC3339`, `RFC822`, `RFC850`,
 
 
 Download
@@ -215,11 +225,6 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 
 > You can pick and start any, or do something else entirely.
 
-- [x] `gitime sum --since <commit>`
-- [x] `gitime sum --since <tag>`
-- [x] `gitime sum --until <ref>`
-- [x] `gitime sum --until <tag>`
-- [ ] `gitime sum --since <datetime>`
 - [ ] `curl install.sh | bash`
 - [ ] flatpak
 - [ ] git extension

@@ -2,10 +2,13 @@
 
 # https://github.com/bats-core/bats-core
 # Run:
-#     bats test
+#     make test-acceptance
 
+# We use gitime's own repo as fixture.
+# We copy this project into a temporary fixture dir (in RAM),
+# and then have it check out the appropriate fixture-XX tag,
+# and finally run integration testing on that temporary repo.
 TMP_FIXTURE_DIR="/tmp/gitime-test"
-
 
 setup() {
     load 'test_helper/bats-support/load'
@@ -24,11 +27,6 @@ setup() {
     fi
 
     export GITIME_NO_STDIN=1
-
-    # We use gitime's own repo as fixture.
-    # We copy this project into a temporary dir (in RAM),
-    # check out the appropriate fixture-XX tag,
-    # and run integration testing on that temporary repo.
 
     cp -R "$PROJECT_DIR" "$TMP_FIXTURE_DIR"
     cd "$TMP_FIXTURE_DIR" || exit
@@ -50,10 +48,10 @@ teardown() {
 @test "gitime" {
   run $gitime
   assert_success
-  #assert_output --partial 'Gather information about /spent time from commit messages'
+  assert_output --partial 'Gather information about /spent time from commit messages'
 }
 
-@test "gitime hohohoooo" {
+@test "gitime hohohoooo should fail" {
   run $gitime hohohoooo
   assert_failure
 }
@@ -116,7 +114,7 @@ teardown() {
   assert_output "1 week 3 hours"
 }
 
-@test "gitime sum --author notfound" {
+@test "gitime sum --author notfound (should fail)" {
   run $gitime sum --author notfound
   # shouldn't we fail, here?   TBD
   #assert_failure
@@ -147,7 +145,7 @@ teardown() {
   assert_failure
 }
 
-@test "gitime sum --since <wrong>" {
+@test "gitime sum --since <wrong> (should fail)" {
   run $gitime sum --since lololololo
   assert_failure
 }
@@ -202,6 +200,47 @@ teardown() {
   run $gitime sum --since 0.1.0 --until 0.1.1
   assert_success
   assert_output "30 minutes"
+}
+
+@test "gitime sum --since <date>" {
+  # Sun Mar 26 22:11:03 2023 of 4527140510c2b77a9f2a6eb947b5391d4e2173a9
+  run $gitime sum --since 2023-03-27
+  assert_success
+  assert_output "2 hours"
+}
+
+@test "gitime sum --since <date time>" {
+  run $gitime sum --since "2023-03-26 22:15:00"
+  assert_success
+  assert_output "2 hours 1 minute"
+  # We'd want, but no cigar ; time parsing in Golang is quite weird
+  #run $gitime sum --since "2023-03-26 22:15"
+  #assert_success
+}
+
+@test "gitime sum --since <date rfc3339>" {
+  run $gitime sum --since 2023-03-26T22:15:00Z
+  assert_success
+  assert_output "2 hours 1 minute"
+}
+
+@test "gitime sum --until <date>" {
+  run $gitime sum --until 2023-03-25
+  assert_success
+  assert_output "1 day 3 hours 55 minutes"
+}
+
+@test "gitime sum --since <date> --until <date>" {
+  run $gitime sum --since "2023-03-25 03:30:00" --until "2023-03-25 13:37:00"
+  assert_success
+  assert_output "2 hours 15 minutes"
+}
+
+@test "gitime sum does not accept mixed dates and refs in ranges" {
+  run $gitime sum --until 2023-03-27 --since 0.1.0
+  assert_failure
+  run $gitime sum --since 2023-03-24 --until 0.2.0
+  assert_failure
 }
 
 @test "gitime sum using stdin" {

@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 var (
@@ -92,24 +93,81 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
+func parseTimePerhaps(input string) *time.Time {
+	if input == "" {
+		return nil
+	}
+
+	layouts := []string{
+		time.RFC3339,
+		time.DateTime,
+		time.DateOnly,
+		time.RFC822,
+		time.RFC850,
+	}
+
+	for _, layout := range layouts {
+		parse, err := time.Parse(layout, input)
+		if err == nil {
+			return &parse
+		}
+	}
+
+	return nil
+}
+
 func getRevArgsFromFlags() gitlog.RevArgs {
 	var rev gitlog.RevArgs = nil
 	if FlagSince != "" {
+		flagSinceDate := parseTimePerhaps(FlagSince)
+
 		if FlagUntil != "" {
-			rev = &gitlog.RevRange{
-				New: FlagUntil,
-				Old: FlagSince,
+			flagUntilDate := parseTimePerhaps(FlagUntil)
+
+			if flagUntilDate != nil {
+				if flagSinceDate != nil {
+					rev = &gitlog.RevTime{
+						Since: *flagSinceDate,
+						Until: *flagUntilDate,
+					}
+				} else {
+					fmt.Println("you cannot mix dates and refs in --until and --since")
+					os.Exit(1)
+				}
+			} else {
+				if flagSinceDate != nil {
+					fmt.Println("you cannot mix dates and refs in --since and --until")
+					os.Exit(1)
+				} else {
+					rev = &gitlog.RevRange{
+						New: FlagUntil,
+						Old: FlagSince,
+					}
+				}
 			}
 		} else {
-			rev = &gitlog.RevRange{
-				New: "HEAD",
-				Old: FlagSince,
+			if flagSinceDate != nil {
+				rev = &gitlog.RevTime{
+					Since: *flagSinceDate,
+				}
+			} else {
+				rev = &gitlog.RevRange{
+					New: "HEAD",
+					Old: FlagSince,
+				}
 			}
 		}
 	} else {
 		if FlagUntil != "" {
-			rev = &gitlog.Rev{
-				Ref: FlagUntil,
+			flagUntilDate := parseTimePerhaps(FlagUntil)
+			if flagUntilDate != nil {
+				rev = &gitlog.RevTime{
+					Until: *flagUntilDate,
+				}
+			} else {
+				rev = &gitlog.Rev{
+					Ref: FlagUntil,
+				}
 			}
 		}
 	}
@@ -127,7 +185,9 @@ func ReadGitLog(onlyAuthors []string, excludeMerge bool, directory string) strin
 	}
 	commits, err := git.Log(rev, params)
 	if err != nil {
-		log.Fatalln("Cannot read git log:", err)
+		fmt.Println("Cannot read git log:", err)
+		os.Exit(1)
+		//log.Fatalln("Cannot read git log:", err)
 	}
 
 	s := ""

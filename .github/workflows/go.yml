@@ -31,7 +31,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-#          clean: false
           fetch-depth: 0
 
       - name: Fetch git history and tags (for fixtures)
@@ -60,8 +59,6 @@ jobs:
         with:
           file: ./coverage-unit.txt
           flags: unittests
-#          token: 50ed170f-08b5-4484-97d8-37771615ae42
-#          name: codecov-umbrella
 
       - name: Upload integration tests coverage report
         uses: codecov/codecov-action@v3
