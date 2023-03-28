@@ -245,8 +245,8 @@ teardown() {
 }
 
 @test "gitime sum without stdin" {
-  export GITIME_NO_STDIN=0
-  run bash -c "$gitime sum"
+  #export GITIME_NO_STDIN=0
+  run bash -c "cat /dev/null | $gitime sum"
   assert_success
   assert_output "1 week 3 hours"
 }
