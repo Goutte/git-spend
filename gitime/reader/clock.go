@@ -3,10 +3,6 @@ package reader
 import "time"
 
 func parseTimePerhaps(input string) *time.Time {
-	if input == "" {
-		return nil
-	}
-
 	layouts := []string{
 		time.RFC3339,
 		time.DateTime,
