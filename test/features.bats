@@ -16,7 +16,28 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 @test "git-spend" {
   run $git_spend
   assert_success
-  assert_output --partial 'Gather information about /spent time from commit messages'
+  assert_output --partial 'Manage time-tracking /spent directives in commit messages'
+}
+
+@test "LANG=fr_FR git-spend" {
+  export LANG=fr_FR
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LC_ALL=fr_FR git-spend" {
+  export LC_ALL=fr_FR
+  run $git_spend
+#  LC_ALL=fr_FR run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LC_ALL has priority over LANG" {
+  LANG=en_US LC_ALL=fr_FR run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }
 
 @test "git-spend hohohoooo should fail" {

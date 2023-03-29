@@ -1,0 +1,2 @@
+CommandRootSummary = "Sum up your /spent time on commits"
+CommandRootDescription = "Manage time-tracking /spent directives in commit messages."

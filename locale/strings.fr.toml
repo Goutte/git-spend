@@ -1,0 +1,2 @@
+CommandRootSummary = "Mesurer le temps passé à coder."
+CommandRootDescription = "Gérer les directives /spend dans les messages de commit."

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/goutte/git-spend/gitime"
+	"github.com/goutte/git-spend/locale"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -12,8 +13,8 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		Use:   "git-spend",
-		Short: "Sum up your /spent time on commits",
-		Long:  `Gather information about /spent time from commit messages.`,
+		Short: locale.T("CommandRootSummary"),
+		Long:  locale.T("CommandRootDescription"),
 	}
 )
 
