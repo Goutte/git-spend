@@ -5,12 +5,16 @@ import (
 	"github.com/goutte/git-spend/gitime"
 	"github.com/goutte/git-spend/gitime/reader"
 	"github.com/spf13/cobra"
-	"log"
+)
+
+const (
+	FlagTargetDefault = "."
 )
 
 var (
 	FlagAuthors      []string
 	FlagTarget       string
+	FlagStdin        bool
 	FlagSince        string
 	FlagUntil        string
 	FlagMinutes      bool
@@ -25,20 +29,41 @@ var sumCmd = &cobra.Command{
 	Use:   "sum",
 	Short: "Sum /spent time recorded in commit messages",
 	Long: `The /spend and /spent directives will be parsed and summed
-from the commit messages of the currently checked out branch
-of the git repository of the current working directory.
+from the commit messages in the current directory's git repository.
+
+The default target is the current working directory, '.',
+but you may specify another target using the --target flag:
+
+	git-spend sum --target <some versioned dir with commits> 
 
 You can also get a raw number in a specific unit:
 
-    git-spend sum --minutes
+    git spend sum --minutes
 
 You can also restrict to some commit authors, by name or email:
 
-    git-spend sum --author=Alice --author=bob@pop.net --author=Eve
+    git spend sum --author=Alice --author=bob@pop.net --author=Eve
+
+You can restrict to a range of commits, using a commit hash, a tag, or even HEAD~N.
+
+	git spend sum --since <ref> --until <ref>
+
+For example, to get the time spent on the last 15 commits :
+
+	git spend sum --since HEAD~15
+
+Or the time spent on a tag since the previous tag :
+
+	git spend sum --since 0.1.0 --until 0.1.1
+
+You can also use dates and datetimes, but remember to quote them:
+
+	git spend sum --since 2023-03-21
+	git spend sum --since "2023-03-21 13:37:00"
 
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		ts := Sum(FlagAuthors, FlagExcludeMerge, FlagSince, FlagUntil).Normalize()
+		ts := Sum().Normalize()
 		fmt.Println(formatTimeSpent(ts))
 	},
 }
@@ -64,30 +89,33 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 	return out
 }
 
-func Sum(onlyAuthors []string, excludeMerge bool, since string, until string) *gitime.TimeSpent {
+func Sum() *gitime.TimeSpent {
 	var gitLog string
-	if reader.DoesStdinHaveData() {
-		if len(onlyAuthors) > 0 {
-			log.Fatalln(`Flag --author is not supported with stdin parsing.
+	if FlagStdin {
+		if len(FlagAuthors) > 0 {
+			fail(`Flag --author is not supported with --stdin parsing.
 Meanwhile, you can use --author on git log, like so:
 
     git log --author Bob > log.log && cat log.log | git-spend sum`)
 		}
-		if excludeMerge {
-			log.Fatalln(`Flag --no-merges is not supported with stdin parsing.
+		if FlagExcludeMerge {
+			fail(`Flag --no-merges is not supported with --stdin parsing.
 Meanwhile, you can use --no-merges on git log, like so:
 
     git log --no-merges > log.log && cat log.log | git-spend sum`)
 		}
 		if FlagSince != "" {
-			log.Fatalln(`Flag --since is not supported with stdin parsing.`)
+			fail(`Flag --since is not supported with --stdin parsing.`)
 		}
 		if FlagUntil != "" {
-			log.Fatalln(`Flag --until is not supported with stdin parsing.`)
+			fail(`Flag --until is not supported with --stdin parsing.`)
+		}
+		if FlagTarget != FlagTargetDefault {
+			fail(`Flag --target is not supported with --stdin parsing.`)
 		}
 		gitLog = reader.ReadStdin()
 	} else {
-		gitLog = reader.ReadGitLog(onlyAuthors, excludeMerge, since, until, FlagTarget)
+		gitLog = reader.ReadGitLog(FlagAuthors, FlagExcludeMerge, FlagSince, FlagUntil, FlagTarget)
 	}
 
 	return gitime.CollectTimeSpent(gitLog)
@@ -170,8 +198,14 @@ func addTargetFlags(command *cobra.Command) {
 	command.Flags().StringVar(
 		&FlagTarget,
 		"target",
-		".",
+		FlagTargetDefault,
 		"target this directory instead of the working directory (.)",
+	)
+	command.Flags().BoolVar(
+		&FlagStdin,
+		"stdin",
+		false,
+		"read stdin instead of target's git log",
 	)
 }
 

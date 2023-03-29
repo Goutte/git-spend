@@ -49,7 +49,7 @@ release: clean build build-windows-amd64
 
 test: test-unit
 
-test-all: test-depend test-unit test-acceptance
+test-all: test-unit test-acceptance
 
 test-unit:
 	go test `go list ./...`

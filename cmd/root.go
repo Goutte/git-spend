@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/goutte/git-spend/gitime"
 	"os"
 
@@ -52,4 +53,9 @@ func initConfig() {
 	_ = viper.ReadInConfig()
 
 	gitime.UpdateTimeModuloConfiguration()
+}
+
+func fail(anything interface{}) {
+	fmt.Println(anything)
+	os.Exit(1)
 }

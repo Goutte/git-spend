@@ -5,13 +5,13 @@
 # Run:
 #     make test-acceptance
 
-# We use git-spend's own repo as fixture for tests.
+# We use git-spend's own repo as fixture for tests. (🐕 woof)
 # We copy this project into a temporary fixture dir (in RAM),
 # and then have it check out the appropriate fixture-XX tag,
 # and finally run integration testing on that temporary repo.
 # See the setup() BATS hook defined at the bottom of this file.
-# THIS DIRECTORY WILL BE `RM -RF` SO BEWARE OF WHAT'S IN HERE.
-TMP_FIXTURE_DIR="/tmp/git-spend-test"
+# THIS DIRECTORY WILL BE `RM -RF` SO BEWARE OF WHAT'S IN THERE.
+TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
 @test "git-spend" {
   run $git_spend
@@ -229,53 +229,52 @@ TMP_FIXTURE_DIR="/tmp/git-spend-test"
   assert_failure
 }
 
-@test "git-spend sum without stdin" {
-  #export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat /dev/null | $git_spend sum"
+@test "git-spend sum ignores stdin by default" {
+  run bash -c "cat 0.1.0.log | $git_spend sum"
   assert_success
-  assert_output "1 week 3 hours"
+  assert_output "1 week 3 hours"  # and not "1 day 7 hours 57 minutes" for 0.1.0
 }
 
-@test "git-spend sum using stdin" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat fixture-00.log | $git_spend sum"
+@test "git-spend sum --stdin" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin"
 #  run $git_spend sum < fixture-00.log
   assert_success
   assert_output "1 week 3 hours"
 }
 
 @test "git-spend sum using another stdin" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat 0.1.0.log | $git_spend sum"
+  run bash -c "cat 0.1.0.log | $git_spend sum --stdin"
 #  run bash -c "$git_spend sum < 0.1.0.log"
   assert_success
-  assert_output "1 day 7 hours 57 minutes"
+  assert_output "1 day 7 hours 57 minutes"  # and not "1 week 3 hours"
 }
 
-@test "git-spend sum using stdin does not accept --no-merges" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat fixture-00.log | $git_spend sum --no-merges"
+@test "git-spend sum --stdin does not accept --target" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin --target ${PROJECT_DIR}"
 #  run bash -c "$git_spend sum --no-merges < fixture-00.log"
   assert_failure
 }
 
-@test "git-spend sum using stdin does not accept --author" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat fixture-00.log | $git_spend sum --author Goutte"
+@test "git-spend sum --stdin does not accept --no-merges" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin --no-merges"
+#  run bash -c "$git_spend sum --no-merges < fixture-00.log"
+  assert_failure
+}
+
+@test "git-spend sum --stdin does not accept --author" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin --author Goutte"
 #  run bash -c "$git_spend sum --author Goutte < fixture-00.log"
   assert_failure
 }
 
-@test "git-spend sum using stdin does not accept --since" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat fixture-00.log | $git_spend sum --since 0.1.0"
+@test "git-spend sum --stdin does not accept --since" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin --since 0.1.0"
 #  run bash -c "$git_spend sum --since 0.1.0 < fixture-00.log"
   assert_failure
 }
 
-@test "git-spend sum using stdin does not accept --until" {
-  export GIT_SPEND_NO_STDIN=0
-  run bash -c "cat fixture-00.log | $git_spend sum --until 0.1.0"
+@test "git-spend sum --stdin does not accept --until" {
+  run bash -c "cat fixture-00.log | $git_spend sum --stdin --until 0.1.0"
 #  r0un bash -c "$git_spend sum --until 0.1.0 < fixture-00.log"
   assert_failure
 }
@@ -301,7 +300,7 @@ setup() {
     fi
 
     # CI buffers unwanted data in stdin, so let's just disable stdin for most tests
-    export GIT_SPEND_NO_STDIN=1
+    #export GIT_SPEND_NO_STDIN=1
     export TZ="Europe/Paris"
 
     cp -R "${PROJECT_DIR}" "${TMP_FIXTURE_DIR}"
