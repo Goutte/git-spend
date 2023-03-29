@@ -172,7 +172,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 }
 
 @test "git-spend sum --until tags/<tag>" {
-  run $git_spend sum --until 0.1.0
+  run $git_spend sum --until tags/0.1.0
   assert_success
   assert_output "1 day 7 hours 57 minutes"
 }
