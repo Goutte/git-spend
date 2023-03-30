@@ -2,6 +2,18 @@ And="et"
 Or="ou"
 
 
+UnitMonthSingular="mois"
+UnitMonthPlural="mois"
+UnitWeekSingular="semaine"
+UnitWeekPlural="semaines"
+UnitDaySingular="jour"
+UnitDayPlural="jours"
+UnitHourSingular="heure"
+UnitHourPlural="heures"
+UnitMinuteSingular="minute"
+UnitMinutePlural="minutes"
+
+
 CommandRootSummary = "Mesurer le temps passé à coder."
 CommandRootDescription = "Gérer les directives /spend dans les messages de commit."
 

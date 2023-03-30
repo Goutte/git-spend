@@ -2,6 +2,18 @@ And="and"
 Or="or"
 
 
+UnitMonthSingular="month"
+UnitMonthPlural="months"
+UnitWeekSingular="week"
+UnitWeekPlural="weeks"
+UnitDaySingular="day"
+UnitDayPlural="days"
+UnitHourSingular="hour"
+UnitHourPlural="hours"
+UnitMinuteSingular="minute"
+UnitMinutePlural="minutes"
+
+
 CommandRootSummary = "Sum up your /spent time on commits"
 CommandRootDescription = """
 Manage time-tracking /spent directives in commit messages.

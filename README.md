@@ -261,6 +261,6 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
 - [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
-- [ ] docker _(why?)_
+- [ ] docker _(`docker run git-spend` ?)_
 - [x] i18n _(ongoing)_
 - [ ] Right-To-Left _(ساعد)_

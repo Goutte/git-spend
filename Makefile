@@ -35,7 +35,7 @@ clean:
 
 build:# $(shell find . -name \*.go)
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) $(SOURCE)
-	echo "Your very own copy of git-spend is available here: $(BINARY_PATH)"
+	#echo "Your very own copy of git-spend is available here: $(BINARY_PATH)"
 
 build-coverage:
 	go build -cover -o $(BINARY_PATH)-coverage $(SOURCE)

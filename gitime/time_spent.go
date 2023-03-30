@@ -2,6 +2,7 @@ package gitime
 
 import (
 	"fmt"
+	"github.com/goutte/git-spend/locale"
 	"math"
 )
 
@@ -159,80 +160,59 @@ func (ts *TimeSpent) normalizeModuli() *TimeSpent {
 }
 
 func (ts *TimeSpent) minutesToString() string {
-	s := ""
-	if ts.Minutes > 0.0 {
-		intPart, fracPart := math.Modf(ts.Minutes)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d minute", uint64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f minute", ts.Minutes)
-		}
-		if ts.Minutes >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
+	return formatUnitComponent(
+		ts.Minutes,
+		locale.T("UnitMinuteSingular"),
+		locale.T("UnitMinutePlural"),
+	)
 }
 
 func (ts *TimeSpent) hoursToString() string {
-	s := ""
-	if ts.Hours > 0.0 {
-		intPart, fracPart := math.Modf(ts.Hours)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d hour", uint64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f hour", ts.Hours)
-		}
-		if ts.Hours >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
+	return formatUnitComponent(
+		ts.Hours,
+		locale.T("UnitHourSingular"),
+		locale.T("UnitHourPlural"),
+	)
 }
 
 func (ts *TimeSpent) daysToString() string {
-	s := ""
-	if ts.Days > 0.0 {
-		intPart, fracPart := math.Modf(ts.Days)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d day", uint64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f day", ts.Days)
-		}
-		if ts.Days >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
+	return formatUnitComponent(
+		ts.Days,
+		locale.T("UnitDaySingular"),
+		locale.T("UnitDayPlural"),
+	)
 }
 
 func (ts *TimeSpent) weeksToString() string {
-	s := ""
-	if ts.Weeks > 0.0 {
-		intPart, fracPart := math.Modf(ts.Weeks)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d week", int64(intPart))
-		} else {
-			s += fmt.Sprintf("%.1f week", ts.Weeks)
-		}
-		if ts.Weeks >= 2.0 {
-			s += "s"
-		}
-	}
-	return s
+	return formatUnitComponent(
+		ts.Weeks,
+		locale.T("UnitWeekSingular"),
+		locale.T("UnitWeekPlural"),
+	)
 }
 
 func (ts *TimeSpent) monthsToString() string {
+	return formatUnitComponent(
+		ts.Months,
+		locale.T("UnitMonthSingular"),
+		locale.T("UnitMonthPlural"),
+	)
+}
+
+func formatUnitComponent(value float64, singularUnit string, pluralUnit string) string {
 	s := ""
-	if ts.Months > 0.0 {
-		intPart, fracPart := math.Modf(ts.Months)
-		if fracPart == 0.0 {
-			s += fmt.Sprintf("%d month", int64(intPart))
+	if value > 0.0 {
+		var unit string
+		if value >= 2.0 {
+			unit = pluralUnit
 		} else {
-			s += fmt.Sprintf("%.1f month", ts.Months)
+			unit = singularUnit
 		}
-		if ts.Months >= 2.0 {
-			s += "s"
+		intPart, fracPart := math.Modf(value)
+		if fracPart == 0.0 {
+			s += fmt.Sprintf("%d %s", int64(intPart), unit)
+		} else {
+			s += fmt.Sprintf("%.1f %s", value, unit)
 		}
 	}
 	return s

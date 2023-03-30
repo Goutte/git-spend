@@ -308,6 +308,13 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }
 
+@test "LANG=fr git-spend sum" {
+  export LANG=fr
+  run $git_spend sum --until tags/0.1.0
+  assert_success
+  assert_output '1 jour 7 heures 57 minutes'
+}
+
 @test "LC_ALL has priority over LANG" {
   export LANG=en_US
   export LC_ALL=fr_FR
@@ -331,6 +338,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 setup() {
     load 'test_helper/bats-support/load'
     load 'test_helper/bats-assert/load'
+    export TZ="Europe/Paris"
 
     TESTS_DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     PROJECT_DIR="$( dirname "$TESTS_DIR" )"
@@ -345,10 +353,6 @@ setup() {
       export GOCOVERDIR=${COVERAGE_DIR}
       git_spend="${git_spend}-coverage"
     fi
-
-    # CI buffers unwanted data in stdin, so let's just disable stdin for most tests
-    #export GIT_SPEND_NO_STDIN=1
-    export TZ="Europe/Paris"
 
     cp -R "${PROJECT_DIR}" "${TMP_FIXTURE_DIR}"
     cd "${TMP_FIXTURE_DIR}" || exit
