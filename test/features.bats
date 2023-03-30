@@ -350,6 +350,14 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output --partial 'Manage time-tracking /spent directives in commit messages.'
 }
 
+@test "Unhandled language falls back to english" {
+  export LANGUAGE="jp"
+
+  run $git_spend
+  assert_success
+  assert_output --partial 'Manage time-tracking /spent directives in commit messages.'
+}
+
 # ---
 
 setup() {
