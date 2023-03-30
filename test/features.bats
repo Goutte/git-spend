@@ -223,6 +223,12 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output "2 hours 15 minutes"
 }
 
+@test "git-spend sum but nothing was found" {
+  run $git_spend sum --since "2023-03-25" --until "2023-03-25"
+  assert_success
+  assert_output --partial "No time-tracking /spend directives found in commits"
+}
+
 @test "git-spend sum does not accept mixed dates and refs in ranges" {
   run $git_spend sum --until 2023-03-27 --since 0.1.0
   assert_failure
