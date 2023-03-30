@@ -44,6 +44,7 @@ func loadFirstMessageFileFound(bundle *i18n.Bundle, localeTag language.Tag, doma
 	files := []string{
 		fmt.Sprintf("%s.%s.%s", domain, localeTag, extension),
 		fmt.Sprintf("%s.%s.%s", domain, base, extension),
+		fmt.Sprintf("%s.%s.%s", domain, "en", extension),
 	}
 
 	for _, fileName := range files {
