@@ -32,6 +32,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 @test "git-spend sum --help" {
   run $git_spend sum --help
   assert_success
+  assert_output --partial 'The /spend and /spent directives will be parsed and summed'
 }
 
 @test "git-spend sum" {
@@ -331,6 +332,16 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   run $git_spend
   assert_success
   assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "Default language is english" {
+  export LANGUAGE=""
+  export LC_ALL=""
+  export LANG=""
+
+  run $git_spend
+  assert_success
+  assert_output --partial 'Manage time-tracking /spent directives in commit messages.'
 }
 
 # ---
