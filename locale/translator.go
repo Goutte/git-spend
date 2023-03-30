@@ -13,7 +13,7 @@ import (
 // defaultLanguage should be language.Esperanto 💡 ("eo")
 var defaultLanguage = language.English
 
-// localeFS points to an embedded filesystem of TOML files (eases binary distribution)
+// localeFS points to an embedded filesystem of TOML translation files (eases binary distribution)
 //
 //go:embed *.toml
 var localeFS embed.FS
@@ -21,16 +21,22 @@ var localeFS embed.FS
 // Localizer can be used to fetch localized messages
 var Localizer *i18n.Localizer
 
+// T fetches the translation of the specified key
 func T(key string) string {
 	localized, _ := Localizer.Localize(&i18n.LocalizeConfig{
 		MessageID: key,
-		//DefaultMessage: &i18n.Message{
-		//	ID: "CommandRootDescription",
-		//	Other: `Administri tempo-spurado "/spend …" direktivojn en commit-mesaĝoj.`,
-		//},
 	})
 
 	return localized
+}
+
+// Tf fetches the translation of the specified key and formats it like Sprintf
+func Tf(key string, a ...any) string {
+	localized, _ := Localizer.Localize(&i18n.LocalizeConfig{
+		MessageID: key,
+	})
+
+	return fmt.Sprintf(localized, a...)
 }
 
 func loadFirstMessageFileFound(bundle *i18n.Bundle, localeTag language.Tag, domain string, extension string) error {

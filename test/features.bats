@@ -19,27 +19,6 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output --partial 'Manage time-tracking /spent directives in commit messages'
 }
 
-@test "LANG=fr_FR git-spend" {
-  export LANG=fr_FR
-  run $git_spend
-  assert_success
-  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
-}
-
-@test "LC_ALL=fr_FR git-spend" {
-  export LC_ALL=fr_FR
-  run $git_spend
-#  LC_ALL=fr_FR run $git_spend
-  assert_success
-  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
-}
-
-@test "LC_ALL has priority over LANG" {
-  LANG=en_US LC_ALL=fr_FR run $git_spend
-  assert_success
-  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
-}
-
 @test "git-spend hohohoooo should fail" {
   run $git_spend hohohoooo
   assert_failure
@@ -298,6 +277,53 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --until 0.1.0"
 #  r0un bash -c "$git_spend sum --until 0.1.0 < fixture-00.log"
   assert_failure
+}
+
+@test "LANGUAGE=fr_FR git-spend" {
+  export LANGUAGE=fr_FR
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LANGUAGE=fr git-spend" {
+  export LANGUAGE=fr
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LC_ALL=fr_FR git-spend" {
+  export LC_ALL=fr_FR
+  run $git_spend
+#  LC_ALL=fr_FR run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LANG=fr_FR git-spend" {
+  export LANG=fr_FR
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LC_ALL has priority over LANG" {
+  export LANG=en_US
+  export LC_ALL=fr_FR
+
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
+}
+
+@test "LANGUAGE has priority over LC_ALL" {
+  export LANGUAGE=fr_FR
+  export LC_ALL=en_US
+
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }
 
 # ---

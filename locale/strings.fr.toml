@@ -1,2 +1,89 @@
 CommandRootSummary = "Mesurer le temps passé à coder."
 CommandRootDescription = "Gérer les directives /spend dans les messages de commit."
+CommandSumSummary = "Cumule le temps enregistré dans les commits via /spend"
+CommandSumDescription = """
+Les directives /spend et /spent des messages de commit
+du dépôt git du répertoire courant seront lues et
+leurs durées additionnées.
+
+Le répertoire cible par défaut est le répertoire courant, `.`,
+mais vous pouvez en viser un autre avec --target :
+
+	git-spend sum --target <dossier de projet avec des commits>
+
+Vous pouvez obtenir un résultat numérique en précisant une unité :
+
+	git spend sum --minutes
+
+Vous pouvez également filtrer par auteurs, avec leurs noms ou courriels:
+
+	git spend sum --author=Alice --author=bob@pop.net --author=Eve
+
+Vous pouvez limiter à une plage de commits,
+en utilisant un hash de commit, une balise ou même HEAD~N.
+
+	git spend sum --since <ref> --until <ref>
+
+Par exemple, pour obtenir le temps passé sur les 15 derniers commits :
+
+	git spend sum --since HEAD~15
+
+Ou le temps passé sur un tag depuis le tag précédent :
+
+	git spend sum --since 0.1.0 --until 0.1.1
+
+Vous pouvez utiliser des dates, mais n'oubliez pas les guillemets :
+
+	git spend sum --since "2023-03-21 13:37:00"
+	git spend sum --since 2023-03-21
+
+D'autres formats sont acceptés (RFC3339, RFC822, RFC850), et si vous
+avez besoin de spécifier la zone horaire, utilisez TZ :
+
+    TZ="Europe/Paris" git spend sum --until "2023-03-31 10:00:00"
+
+"""
+CommandSumFailureStdinAuthors="""
+Le paramètre --author n'est pas utilisable avec --stdin.
+Vous pouvez cependant utiliser --author sur git log, comme ceci :
+
+  git log --author Bob | git spend sum --stdin
+
+"""
+CommandSumFailureStdinNoMerges="""
+Le paramètre --no-merges n'est pas utilisable avec --stdin.
+Vous pouvez cependant utiliser --no-merges sur git log, comme ceci :
+
+  git log --no-merges | git spend sum --stdin
+
+"""
+CommandSumFailureStdinSince="""
+Le paramètre --since n'est pas utilisable avec --stdin.
+Vous pouvez cependant utiliser --since sur git log, comme ceci :
+
+  git log --since tags/0.1.0 | git spend sum --stdin
+
+"""
+CommandSumFailureStdinUntil="""
+Le paramètre --until n'est pas utilisable avec --stdin.
+Vous pouvez cependant utiliser --until sur git log, comme ceci :
+
+  git log --until 2023-03-31 | git spend sum --stdin
+
+"""
+CommandSumFailureStdinTarget="""
+Le paramètre --target est exclusif avec --stdin.
+"""
+
+CommandSumFlagMinutesHelp="afficher la somme en minutes"
+CommandSumFlagHoursHelp="afficher la somme en heures (1 heure = %.1f minutes)"
+CommandSumFlagDaysHelp="afficher la somme en jours (1 jour = %.1f heures)"
+CommandSumFlagWeeksHelp="afficher la somme en semaines (1 semaine = %.1f jours)"
+CommandSumFlagMonthsHelp="afficher la somme en mois (1 mois = %.1f semaines)"
+
+CommandSumFlagTargetHelp="cibler ce dossier au lieu du du dossier courant"
+CommandSumFlagStdinHelp="lire depuis l'entrée standard plutôt que git log"
+CommandSumFlagAuthorsHelp="filtrer par nom ou courriel (peut être répété)"
+CommandSumFlagNoMergesHelp="ignorer les commits de merge"
+CommandSumFlagSinceHelp="n'utiliser que les commits après cette ref (exclusive)"
+CommandSumFlagUntilHelp="n'utiliser que les commits avant cette ref (inclusive)"

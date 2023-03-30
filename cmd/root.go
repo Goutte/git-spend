@@ -56,7 +56,12 @@ func initConfig() {
 	gitime.UpdateTimeModuloConfiguration()
 }
 
-func fail(anything interface{}) {
+func fail(anything interface{}, command *cobra.Command) {
+	// Questions:
+	// - stderr ?
+	// - CLI colors ?
 	fmt.Println(anything)
+
+	_ = command.Help()
 	os.Exit(1)
 }

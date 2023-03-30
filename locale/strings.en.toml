@@ -1,2 +1,88 @@
 CommandRootSummary = "Sum up your /spent time on commits"
-CommandRootDescription = "Manage time-tracking /spent directives in commit messages."
+CommandRootDescription = """
+Manage time-tracking /spent directives in commit messages.
+"""
+
+CommandSumSummary = "Sum /spent time recorded in commit messages"
+CommandSumDescription = """
+The /spend and /spent directives will be parsed and summed
+from the commit messages in the current directory's git repository.
+
+The default target is the current working directory, '.',
+but you may specify another target using the --target flag:
+
+	git-spend sum --target <some versioned dir with commits>
+
+You can also get a raw number in a specific unit:
+
+	git spend sum --minutes
+
+You can also restrict to some commit authors, by name or email:
+
+	git spend sum --author=Alice --author=bob@pop.net --author=Eve
+
+You can restrict to a range of commits, using a commit hash, a tag,
+or even HEAD~N.
+
+	git spend sum --since <ref> --until <ref>
+
+For example, to get the time spent on the last 15 commits :
+
+	git spend sum --since HEAD~15
+
+Or the time spent on a tag since the previous tag :
+
+	git spend sum --since 0.1.0 --until 0.1.1
+
+You can also use dates and datetimes, but remember to quote them:
+
+	git spend sum --since 2023-03-21
+	git spend sum --since "2023-03-21 13:37:00"
+
+Other formats are allowed (RFC3339, RFC822, RFC850),
+and if you need to set a timezone use the TZ environment variable:
+
+	TZ="Europe/Paris" git spend sum --until "2023-03-31 10:00:00"
+
+"""
+CommandSumFailureStdinAuthors="""
+Flag --author is not supported with --stdin parsing.
+Meanwhile, you can use --author on git log, like so:
+
+  git log --author Bob | git spend sum --stdin
+"""
+CommandSumFailureStdinNoMerges="""
+Flag --no-merges is not supported with --stdin parsing.
+Meanwhile, you can use --no-merges on git log, like so:
+
+  git log --no-merges | git spend sum --stdin
+"""
+CommandSumFailureStdinSince="""
+Flag --since is not supported with --stdin parsing.
+Meanwhile, you can use --since on git log, like so:
+
+  git log --since tags/0.1.0 | git spend sum --stdin
+"""
+CommandSumFailureStdinUntil="""
+Flag --until is not supported with --stdin parsing.
+Meanwhile, you can use --until on git log, like so:
+
+  git log --until 2023-03-31 | git spend sum --stdin
+"""
+CommandSumFailureStdinTarget="""
+Flag --target is not supported with --stdin parsing.
+What would it mean, to you ?   Contribs are welcome.
+"""
+
+CommandSumFlagMinutesHelp="show sum in minutes"
+CommandSumFlagHoursHelp="show sum in hours (1 hour = %.1f minutes)"
+CommandSumFlagDaysHelp="show sum in days (1 day = %.1f hours)"
+CommandSumFlagWeeksHelp="show sum in weeks (1 week = %.1f days)"
+CommandSumFlagMonthsHelp="show sum in months (1 month = %.1f weeks)"
+
+CommandSumFlagTargetHelp="target this directory instead of the working directory"
+CommandSumFlagStdinHelp="read stdin instead of target's git log"
+CommandSumFlagAuthorsHelp="only use commits by these authors (can be repeated)"
+CommandSumFlagNoMergesHelp="ignore merge commits"
+CommandSumFlagSinceHelp="only use commits after this ref (exclusive)"
+CommandSumFlagUntilHelp="only use commits before this ref (inclusive)"

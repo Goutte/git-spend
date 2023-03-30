@@ -69,14 +69,14 @@ cd <some git versioned project with commits using /spend directives>
 and run:
 
 ```
-git-spend sum
+git spend sum
 ```
 > `2 days 1 hour 42 minutes`
 
 Or run `git-spend` from anywhere, but specify the `--target` directory (which defaults to `.`):
 
 ```
-git-spend sum --target <some git versioned project dir>
+git spend sum --target <some git versioned project dir>
 ```
 > `2 days 1 hour 42 minutes`
 
@@ -86,9 +86,9 @@ git-spend sum --target <some git versioned project dir>
 You can also get the spent time in a specific unit :
 
 ```
-git-spend sum --minutes
-git-spend sum --hours
-git-spend sum --days
+git spend sum --minutes
+git spend sum --hours
+git spend sum --days
 ```
 > These values will always be rounded to integers, for convenience,
 > although _git-spend_ does understand floating point numbers in `/spend` directives.
@@ -99,7 +99,7 @@ git-spend sum --days
 You can track the time of specified authors only, by `name` or `email` :
 
 ```
-git-spend sum --author Alice --author bob@email.net
+git spend sum --author Alice --author bob@email.net
 ```
 
 
@@ -108,7 +108,7 @@ git-spend sum --author Alice --author bob@email.net
 You can also exclude merge commits :
 
 ```
-git-spend sum --no-merges
+git spend sum --no-merges
 ```
 
 
@@ -117,26 +117,26 @@ git-spend sum --no-merges
 You can restrict to a range of commits, using a commit hash, a tag, or even `HEAD~N`.
 
 ```
-git-spend sum --since <ref> --until <ref>
+git spend sum --since <ref> --until <ref>
 ```
 
 For example, to get the time spent on the last `15` commits :
 
 ```
-git-spend sum --since HEAD~15
+git spend sum --since HEAD~15
 ```
 
 Or the time spent on a tag since previous tag :
 
 ```
-git-spend sum --since 0.1.0 --until 0.1.1
+git spend sum --since 0.1.0 --until 0.1.1
 ```
 
 You can also use _dates_ and _datetimes_, but remember to quote them if you specify the time:
 
 ```
-git-spend sum --since 2023-03-21
-git-spend sum --since "2023-03-21 13:37:00"
+git spend sum --since 2023-03-21
+git spend sum --since "2023-03-21 13:37:00"
 ```
 
 > 📅 Other supported time formats: [`RFC3339`], [`RFC822`], [`RFC850`].
@@ -176,14 +176,17 @@ go install github.com/goutte/git-spend
 Advanced Usage
 --------------
 
-### Read from stdin
+### Read from standard input
 
-You can also parse messages from `stdin` instead of the git log:
+You can also directly parse messages from `stdin`
+instead of attempting to read the git log:
 
 ```
 git log > git.log
 cat git.log | git-spend sum --stdin
 ```
+
+> `git spend` ignores standard input otherwise.
 
 
 ### Configure the time modulo
@@ -257,8 +260,7 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 - [ ] `curl install.sh | sudo sh`?
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
-- [ ] flatpak (road blocked, see [`packaging/`](./packaging))
-- [ ] git extension
-- [ ] docker
-- [ ] i18n _(godspeed)_
-- [ ] Right-To-Left _(help)_
+- [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
+- [ ] docker _(why?)_
+- [x] i18n _(ongoing)_
+- [ ] Right-To-Left _(ساعد)_
