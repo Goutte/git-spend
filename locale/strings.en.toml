@@ -1,7 +1,12 @@
+And="and"
+Or="or"
+
+
 CommandRootSummary = "Sum up your /spent time on commits"
 CommandRootDescription = """
 Manage time-tracking /spent directives in commit messages.
 """
+
 
 CommandSumSummary = "Sum /spent time recorded in commit messages"
 CommandSumDescription = """
@@ -73,6 +78,10 @@ CommandSumFailureStdinTarget="""
 Flag --target is not supported with --stdin parsing.
 What would it mean, to you ?   Contribs are welcome.
 """
+CommandSumFailureNothingFound="No time-tracking /spend directives found in commits"
+CommandSumFailureNothingFoundForAuthors="by authors %s"
+CommandSumFailureNothingFoundAfterSince="after %s"
+CommandSumFailureNothingFoundBeforeUntil="before %s"
 
 CommandSumFlagMinutesHelp="show sum in minutes"
 CommandSumFlagHoursHelp="show sum in hours (1 hour = %.1f minutes)"

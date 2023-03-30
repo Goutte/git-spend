@@ -1,5 +1,11 @@
+And="et"
+Or="ou"
+
+
 CommandRootSummary = "Mesurer le temps passé à coder."
 CommandRootDescription = "Gérer les directives /spend dans les messages de commit."
+
+
 CommandSumSummary = "Cumule le temps enregistré dans les commits via /spend"
 CommandSumDescription = """
 Les directives /spend et /spent des messages de commit
@@ -74,6 +80,10 @@ Vous pouvez cependant utiliser --until sur git log, comme ceci :
 CommandSumFailureStdinTarget="""
 Le paramètre --target est exclusif avec --stdin.
 """
+CommandSumFailureNothingFound="Aucune directive de chronometrage /spend trouvée dans les commits"
+CommandSumFailureNothingFoundForAuthors="de %s"
+CommandSumFailureNothingFoundAfterSince="après %s"
+CommandSumFailureNothingFoundBeforeUntil="avant %s"
 
 CommandSumFlagMinutesHelp="afficher la somme en minutes"
 CommandSumFlagHoursHelp="afficher la somme en heures (1 heure = %.1f minutes)"

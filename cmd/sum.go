@@ -6,6 +6,7 @@ import (
 	"github.com/goutte/git-spend/gitime/reader"
 	"github.com/goutte/git-spend/locale"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 const (
@@ -33,7 +34,7 @@ var sumCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ts, err := Sum()
 		if err != nil {
-			fail(err.Error(), cmd)
+			fail(err, cmd)
 		}
 		if ts != nil {
 			fmt.Println(formatTimeSpent(ts.Normalize()))
@@ -57,7 +58,24 @@ func formatTimeSpent(ts *gitime.TimeSpent) string {
 		out = ts.String()
 	}
 	if out == "" {
-		out = locale.T("CommandSumDescription")
+		out = locale.T("CommandSumFailureNothingFound")
+		if len(FlagAuthors) > 0 {
+			out += " " + locale.Tf("CommandSumFailureNothingFoundForAuthors", strings.Join(
+				FlagAuthors, " "+locale.T("Or")+" ",
+			))
+		}
+		if FlagSince != "" {
+			out += " "
+			out += locale.Tf("CommandSumFailureNothingFoundAfterSince", FlagSince)
+		}
+		if FlagUntil != "" {
+			if FlagSince != "" {
+				out += " " + locale.T("And")
+			}
+
+			out += " " + locale.Tf("CommandSumFailureNothingFoundBeforeUntil", FlagUntil)
+		}
+		out += "."
 	}
 	return out
 }

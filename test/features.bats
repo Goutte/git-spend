@@ -106,7 +106,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   # shouldn't we fail, here?   TBD
   #assert_failure
   assert_success  # …meanwhile
-  assert_output "No time-tracking directives /spend or /spent found in commits."
+  assert_output --partial "No time-tracking /spend directives found in commits"
 }
 
 @test "git-spend sum --since <commit>" {
