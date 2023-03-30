@@ -232,7 +232,7 @@ make install
 
 ### Build for other platforms
 
-You may use the `GOAS` and `GOARCH` environment variables to control the build targets:
+You may use the `GOOS` and `GOARCH` environment variables to control the build targets:
 
 ```
 GOOS=<target-OS> GOARCH=<target-architecture> go build -o build/git-spend .
