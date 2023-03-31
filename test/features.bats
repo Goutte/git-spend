@@ -370,6 +370,19 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }
 
+@test "Generate man pages" {
+  run $git_spend man
+  assert_success
+}
+
+@test "Installing man pages requires sudo" {
+  run $git_spend man --output /usr/local/share/man/man8
+  assert_failure
+  assert_output --partial 'permission denied'
+}
+
+
+
 # ---
 
 setup() {
