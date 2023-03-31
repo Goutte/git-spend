@@ -11,6 +11,8 @@ VERSION=$(shell git describe --tags)
 
 BINARY_PATH=build/git-spend
 SOURCE=.
+# /!. CAREFUL: THIS DIRECTORY WILL BE RM -RF 'ed
+TMP_MAN_PATH=/tmp/git-spend-man
 
 # Use the -s and -w linker flags to strip the debugging information
 LD_FLAGS_STRIP=-s -w
@@ -32,6 +34,7 @@ clean:
 	rm -f "$(BINARY_PATH).exe"
 	rm -f "$(BINARY_PATH).000"
 	rm -f test-coverage/*
+	rm -rf "$(TMP_MAN_PATH)"
 
 build:# $(shell find . -name \*.go)
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) $(SOURCE)
@@ -68,20 +71,19 @@ coverage-acceptance: clean build-coverage
 	go tool covdata textfmt -i=test-coverage/ -o coverage-integration.txt
 
 install: build
-	sudo install build/git-spend /usr/local/bin/
+	sudo install "$(BINARY_PATH)" /usr/local/bin/
 
 install-release: release
-	sudo install build/git-spend /usr/local/bin/
+	sudo install "$(BINARY_PATH)" /usr/local/bin/
 
-TMP_MAN_PATH=/tmp/git-spend.man
-
-man:
+man: clean
 	mkdir -p "$(TMP_MAN_PATH)"
 	go run . man --output "$(TMP_MAN_PATH)"
 	echo "man pages were generated in $(TMP_MAN_PATH)"
 
-install-man: man
-	sudo go run . man --install
-	# same as
+install-man: build
+	#sudo go run . man --install  # nope, `go` may not be available to `root`
+	sudo "$(BINARY_PATH)" man --install
+	# … same as
 	#sudo mkdir -p /usr/local/share/man/man8
 	#sudo install "$(TMP_MAN_PATH)"/git-spend*.8 /usr/local/share/man/man8/

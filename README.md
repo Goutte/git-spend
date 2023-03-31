@@ -255,19 +255,19 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 ### Translations
 
 Translations files are in `localo/*.toml`.
-To add another language, add a new file, some sugar, soem water, and … _voilà !_
+To add another language, add a new file, some sugar, some water, and … _voilà !_
 
 ### Ideas Stash
 
 > You can pick and start any, or do something else entirely.
 > If you don't like any of these, please voice your concerns as early as possible.
 
-- [ ] `curl install.sh | sudo sh`?
+- [ ] `curl install.sh | sudo sh` ?
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
-- [ ] `git-spend start` → start an internal chronometer  (perhaps `git-spend chrono start` ?)
-- [ ] `git-spend add` → add time to the chronometer
-- [ ] Support rewriting of `/spend chronometer - 15m` in commit hooks
+- [ ] `git-spend chrono start` → start an internal chronometer
+- [ ] `git-spend chrono add` → add time to the chronometer
+- [ ] Support rewriting of `/spend chrono - 15m` in commit hooks
 - [ ] Support rewriting of `/spend <ref> - 15m` in commit hooks 🌟
 - [ ] `git-spend amend <duration>` → amend previous commit with `/spend <duration>`
 - [ ] `git-spend amend --add <duration>` → same but adds

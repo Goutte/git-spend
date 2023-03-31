@@ -201,7 +201,9 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_success
   assert_output "2 hours 1 minute"
   # Want to tolerate missing minutes, but no cigar ; time parsing in Golang is quite peculiar
+  # This can still be done, and would be nice, but I find my solution to be … inelegant. #mr-welcome
   #run $git_spend sum --since "2023-03-26 22:15"
+  #run $git_spend sum --since "2023-03"  # and perhaps this as well?
   #assert_success
 }
 
@@ -304,7 +306,6 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 @test "LC_ALL=fr_FR git-spend" {
   export LC_ALL=fr_FR
   run $git_spend
-#  LC_ALL=fr_FR run $git_spend
   assert_success
   assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }

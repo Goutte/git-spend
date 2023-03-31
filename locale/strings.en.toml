@@ -14,9 +14,25 @@ UnitMinuteSingular="minute"
 UnitMinutePlural="minutes"
 
 
-CommandRootSummary = "Sum up your /spent time on commits"
+CommandRootSummary = "time-tracker using git commits"
 CommandRootDescription = """
 Manage time-tracking /spent directives in commit messages.
+
+Exemples of supported /spend directives:
+
+    /spend 1h30
+    /spend 1 month 3 days 7 hours
+    /spent 15m
+
+Get help on a subcommand using the --help flag:
+
+	git spend sum --help
+
+Or read the (equivalent) manpages of the subcommands:
+
+    man git-spend-sum
+
+Source: https://github.com/Goutte/git-spend
 """
 
 

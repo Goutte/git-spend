@@ -14,8 +14,26 @@ UnitMinuteSingular="minute"
 UnitMinutePlural="minutes"
 
 
-CommandRootSummary = "Mesurer le temps passé à coder."
-CommandRootDescription = "Gérer les directives /spend dans les messages de commit."
+CommandRootSummary = "mesurer le temps passé à coder"
+CommandRootDescription = """
+Gérer les directives /spend inscrites dans les messages de commit.
+
+Exemples de directives /spend supportées:
+
+    /spend 1h30
+    /spend 1 month 3 days 7 hours
+    /spent 15m
+
+Pour obtenir de l'aide sur une subcommande:
+
+	git spend sum --help
+
+Ou lire le manuel (équivalent) d'une subcommande:
+
+    man git-spend-sum
+
+Source: https://github.com/Goutte/git-spend
+"""
 
 
 CommandSumSummary = "Cumule le temps enregistré dans les commits via /spend"
