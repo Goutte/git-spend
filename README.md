@@ -252,15 +252,27 @@ Contribute
 
 Merge requests are welcome.  Make sure you record the time you `/spend` in your commit messages.  :)
 
+### Translations
+
+Translations files are in `localo/*.toml`.
+To add another language, add a new file, some sugar, soem water, and … _voilà !_
 
 ### Ideas Stash
 
 > You can pick and start any, or do something else entirely.
+> If you don't like any of these, please voice your concerns as early as possible.
 
 - [ ] `curl install.sh | sudo sh`?
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
-- [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
+- [ ] `git-spend start` → start an internal chronometer  (perhaps `git-spend chrono start` ?)
+- [ ] `git-spend add` → add time to the chronometer
+- [ ] Support rewriting of `/spend chronometer - 15m` in commit hooks
+- [ ] Support rewriting of `/spend <ref> - 15m` in commit hooks 🌟
+- [ ] `git-spend amend <duration>` → amend previous commit with `/spend <duration>`
+- [ ] `git-spend amend --add <duration>` → same but adds
+- [ ] `git-spend amend --subtract <duration>` → same but subtracts  (alias: `--sub` ?)
 - [ ] docker _(`docker run git-spend` ?)_
+- [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
 - [x] i18n _(ongoing)_ ([blocked upstream](https://github.com/spf13/cobra/issues/719))
 - [ ] Right-To-Left _(ساعد)_
