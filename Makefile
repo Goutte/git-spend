@@ -20,10 +20,10 @@ depend:
 	go get
 
 run:
-	go run main.go
+	go run .
 
 sum:
-	go run main.go sum
+	go run . sum
 
 clean:
 	rm -f "$(BINARY_PATH)"
@@ -72,3 +72,16 @@ install: build
 
 install-release: release
 	sudo install build/git-spend /usr/local/bin/
+
+TMP_MAN_PATH=/tmp/git-spend.man
+
+man:
+	mkdir -p "$(TMP_MAN_PATH)"
+	go run . man --output "$(TMP_MAN_PATH)"
+	echo "man pages were generated in $(TMP_MAN_PATH)"
+
+install-man: man
+	sudo go run . man --install
+	# same as
+	#sudo mkdir -p /usr/local/share/man/man8
+	#sudo install "$(TMP_MAN_PATH)"/git-spend*.8 /usr/local/share/man/man8/

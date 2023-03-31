@@ -107,3 +107,10 @@ CommandSumFlagAuthorsHelp="only use commits by these authors (can be repeated)"
 CommandSumFlagNoMergesHelp="ignore merge commits"
 CommandSumFlagSinceHelp="only use commits after this ref (exclusive)"
 CommandSumFlagUntilHelp="only use commits before this ref (inclusive)"
+
+CommandManSummary="create man pages for git-spend"
+CommandManDescription="""
+Generate man pages in the user's locale.  (defaults to english)
+"""
+CommandManFlagOutput="where to create the man pages"
+CommandManFlagInstall="create man pages in %s (overrides --output)"

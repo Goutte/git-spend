@@ -28,9 +28,10 @@ var (
 )
 
 var sumCmd = &cobra.Command{
-	Use:   "sum",
-	Short: locale.T("CommandSumSummary"),
-	Long:  locale.T("CommandSumDescription"),
+	Use:               "sum",
+	Short:             locale.T("CommandSumSummary"),
+	Long:              locale.T("CommandSumDescription"),
+	DisableAutoGenTag: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		ts, err := Sum()
 		if err != nil {

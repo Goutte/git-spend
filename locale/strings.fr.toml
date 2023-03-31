@@ -109,3 +109,11 @@ CommandSumFlagAuthorsHelp="filtrer par nom ou courriel (peut être répété)"
 CommandSumFlagNoMergesHelp="ignorer les commits de merge"
 CommandSumFlagSinceHelp="n'utiliser que les commits après cette ref (exclusive)"
 CommandSumFlagUntilHelp="n'utiliser que les commits avant cette ref (inclusive)"
+
+CommandManSummary="créer le manuel de git-spend"
+CommandManDescription="""
+Génère le manuel de git-send dans la langue de l'utilisateur.
+(anglais par défaut)
+"""
+CommandManFlagOutput="où créer les fichiers du manuel"
+CommandManFlagInstall="créer le manuel dans %s (remplace --output)"

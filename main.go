@@ -6,8 +6,10 @@ import (
 )
 
 func main() {
+	log.SetFlags(0)
+
 	err := cmd.Execute()
 	if err != nil {
-		log.Fatalln("Failure:", err)
+		log.Fatalln("failure:", err)
 	}
 }

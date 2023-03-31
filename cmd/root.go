@@ -12,9 +12,10 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "git-spend",
-		Short: locale.T("CommandRootSummary"),
-		Long:  locale.T("CommandRootDescription"),
+		Use:               "git-spend",
+		Short:             locale.T("CommandRootSummary"),
+		Long:              locale.T("CommandRootDescription"),
+		DisableAutoGenTag: true,
 	}
 )
 
