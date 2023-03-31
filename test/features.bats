@@ -264,31 +264,26 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
 @test "git-spend sum --stdin does not accept --target" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --target ${PROJECT_DIR}"
-#  run bash -c "$git_spend sum --no-merges < fixture-00.log"
   assert_failure
 }
 
 @test "git-spend sum --stdin does not accept --no-merges" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --no-merges"
-#  run bash -c "$git_spend sum --no-merges < fixture-00.log"
   assert_failure
 }
 
 @test "git-spend sum --stdin does not accept --author" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --author Goutte"
-#  run bash -c "$git_spend sum --author Goutte < fixture-00.log"
   assert_failure
 }
 
 @test "git-spend sum --stdin does not accept --since" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --since 0.1.0"
-#  run bash -c "$git_spend sum --since 0.1.0 < fixture-00.log"
   assert_failure
 }
 
 @test "git-spend sum --stdin does not accept --until" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --until 0.1.0"
-#  run bash -c "$git_spend sum --until 0.1.0 < fixture-00.log"
   assert_failure
 }
 
@@ -379,9 +374,15 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   run $git_spend man --output /usr/local/share/man/man8
   assert_failure
   assert_output --partial 'permission denied'
+
+  run $git_spend man --output /usr/share/man/man8
+  assert_failure
+  assert_output --partial 'permission denied'
+
+  run $git_spend man --install
+  assert_failure
+  assert_output --partial 'permission denied'
 }
-
-
 
 # ---
 
@@ -392,8 +393,8 @@ setup() {
 
     TESTS_DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     PROJECT_DIR="$( dirname "$TESTS_DIR" )"
-    COVERAGE_DIR=${PROJECT_DIR}/test-coverage
-    git_spend=${PROJECT_DIR}/build/git-spend
+    COVERAGE_DIR="${PROJECT_DIR}/test-coverage"
+    git_spend="${PROJECT_DIR}/build/git-spend"
 
     cd "${PROJECT_DIR}" || exit
 
