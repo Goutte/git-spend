@@ -242,18 +242,24 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output "1 week 3 hours"  # and not "1 day 7 hours 57 minutes" for 0.1.0
 }
 
-@test "git-spend sum --stdin" {
+@test "git-spend sum --stdin using |" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin"
-#  run $git_spend sum < fixture-00.log
   assert_success
   assert_output "1 week 3 hours"
-}
 
-@test "git-spend sum using another stdin" {
   run bash -c "cat 0.1.0.log | $git_spend sum --stdin"
-#  run bash -c "$git_spend sum < 0.1.0.log"
   assert_success
   assert_output "1 day 7 hours 57 minutes"  # and not "1 week 3 hours"
+}
+
+@test "git-spend sum --stdin using <" {
+  run bash -c "$git_spend sum --stdin < fixture-00.log"
+  assert_success
+  assert_output "1 week 3 hours"
+
+  run bash -c "$git_spend sum --stdin < 0.1.0.log"
+  assert_success
+  assert_output "1 day 7 hours 57 minutes"
 }
 
 @test "git-spend sum --stdin does not accept --target" {
@@ -282,7 +288,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
 @test "git-spend sum --stdin does not accept --until" {
   run bash -c "cat fixture-00.log | $git_spend sum --stdin --until 0.1.0"
-#  r0un bash -c "$git_spend sum --until 0.1.0 < fixture-00.log"
+#  run bash -c "$git_spend sum --until 0.1.0 < fixture-00.log"
   assert_failure
 }
 
@@ -295,13 +301,6 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
 @test "LANGUAGE=fr git-spend" {
   export LANGUAGE=fr
-  run $git_spend
-  assert_success
-  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
-}
-
-@test "LANGUAGE='fr' git-spend" {
-  export LANGUAGE="fr"
   run $git_spend
   assert_success
   assert_output --partial 'Gérer les directives /spend dans les messages de commit'
@@ -354,14 +353,21 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
   run $git_spend
   assert_success
-  assert_output --partial 'Manage time-tracking /spent directives in commit messages.'
+  assert_output --partial 'Manage time-tracking /spent directives in commit messages'
 }
 
 @test "Unhandled language falls back to english" {
   export LANGUAGE="es_CL"
   run $git_spend
   assert_success
-  assert_output --partial 'Manage time-tracking /spent directives in commit messages.'
+  assert_output --partial 'Manage time-tracking /spent directives in commit messages'
+}
+
+@test "Unhandled locale should fallback to default locale if language is handled" {
+  export LANGUAGE="fr_CA"
+  run $git_spend
+  assert_success
+  assert_output --partial 'Gérer les directives /spend dans les messages de commit'
 }
 
 # ---
