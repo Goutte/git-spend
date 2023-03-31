@@ -103,7 +103,7 @@ CommandSumFlagDaysHelp="afficher la somme en jours (1 jour = %.1f heures)"
 CommandSumFlagWeeksHelp="afficher la somme en semaines (1 semaine = %.1f jours)"
 CommandSumFlagMonthsHelp="afficher la somme en mois (1 mois = %.1f semaines)"
 
-CommandSumFlagTargetHelp="cibler ce dossier au lieu du du dossier courant"
+CommandSumFlagTargetHelp="cibler ce dossier au lieu du dossier courant"
 CommandSumFlagStdinHelp="lire depuis l'entrée standard plutôt que git log"
 CommandSumFlagAuthorsHelp="filtrer par nom ou courriel (peut être répété)"
 CommandSumFlagNoMergesHelp="ignorer les commits de merge"

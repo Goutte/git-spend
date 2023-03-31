@@ -262,5 +262,5 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 - [ ] `git-spend sum --short` → `1d3h27m`
 - [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
 - [ ] docker _(`docker run git-spend` ?)_
-- [x] i18n _(ongoing)_
+- [x] i18n _(ongoing)_ ([blocked upstream](https://github.com/spf13/cobra/issues/719))
 - [ ] Right-To-Left _(ساعد)_
