@@ -207,6 +207,17 @@ Here are the available environment variables :
 - `GIT_SPEND_WEEKS_IN_ONE_MONTH` (default: `4`)
 
 
+### Install the man pages
+
+
+```
+sudo git spend man --install
+```
+
+> `git help spend` will then work as expected.
+
+
+
 Develop
 -------
 
