@@ -10,7 +10,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@master
       - name: Install upx
-        run: apt install upx
+        run: sudo apt install upx
       - name: Generate the artifacts
         run: make release
       - name: Upload the artifacts
