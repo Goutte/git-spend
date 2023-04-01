@@ -156,6 +156,12 @@ Download
 You can [⮋ download the binary](https://github.com/Goutte/git-spend/releases/latest/download/git-spend) straight from the [latest build in the releases](https://github.com/Goutte/git-spend/releases),
 and move it anywhere in your `$PATH`, such as `/usr/local/bin/git-spend` for example.
 
+There is an _experimental_ install script that does exactly this, plus `man` pages generation:
+
+    curl https://raw.githubusercontent.com/Goutte/git-spend/main/install.sh | sh
+
+> 🐧 This script only works for `linux/amd64`, for now.   _Stigmergy?_
+
 ### Via `go get`
 
 You can also install via `go get` (hopefully) :
@@ -274,7 +280,7 @@ To add another language, add a new file, some sugar, some water, and … _voilà
 > You can pick and start any, or do something else entirely.
 > If you don't like any of these, please voice your concerns as early as possible.
 
-- [ ] `curl install.sh | sudo sh` ?
+- [x] `curl install.sh | sudo sh` _(ongoing, wider support needed)_
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
 - [ ] `git-spend chrono start` → start an internal chronometer
@@ -284,7 +290,7 @@ To add another language, add a new file, some sugar, some water, and … _voilà
 - [ ] `git-spend amend <duration>` → amend previous commit with `/spend <duration>`
 - [ ] `git-spend amend --add <duration>` → same but adds
 - [ ] `git-spend amend --subtract <duration>` → same but subtracts  (alias: `--sub` ?)
-- [ ] docker _(`docker run git-spend` ?)_
+- [ ] docker _(`docker run git-spend` -- awkward? ; would need a volume)_
 - [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
 - [x] i18n _(ongoing)_ ([blocked upstream](https://github.com/spf13/cobra/issues/719))
 - [ ] Right-To-Left _(ساعد)_
