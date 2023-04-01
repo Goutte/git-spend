@@ -38,15 +38,17 @@ clean:
 
 build:# $(shell find . -name \*.go)
 	go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH) $(SOURCE)
-	#echo "Your very own copy of git-spend is available here: $(BINARY_PATH)"
 
 build-coverage:
 	go build -cover -o $(BINARY_PATH)-coverage $(SOURCE)
 
+build-linux-arm64: $(shell find . -name \*.go)
+	GOOS=windows GOARCH=arm64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).arm64 $(SOURCE)
+
 build-windows-amd64: $(shell find . -name \*.go)
 	GOOS=windows GOARCH=amd64 go build -ldflags="$(LD_FLAGS_STRIP)" -o $(BINARY_PATH).exe $(SOURCE)
 
-release: clean build build-windows-amd64
+release: clean build build-windows-amd64 build-linux-arm64
 	upx --ultra-brute $(BINARY_PATH)
 	upx --ultra-brute $(BINARY_PATH).exe
 
