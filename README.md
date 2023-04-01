@@ -209,6 +209,7 @@ Here are the available environment variables :
 
 ### Install the man pages
 
+If you installed via direct download, you might want to install the `man` pages:
 
 ```
 sudo git spend man --install
@@ -265,7 +266,7 @@ Merge requests are welcome.  Make sure you record the time you `/spend` in your 
 
 ### Translations
 
-Translations files are in `localo/*.toml`.
+Translations files are in `locale/*.toml`.
 To add another language, add a new file, some sugar, some water, and … _voilà !_
 
 ### Ideas Stash

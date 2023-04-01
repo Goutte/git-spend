@@ -371,6 +371,12 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_success
 }
 
+@test "Generating man pages" {
+  run $git_spend man --output /usr/local/share/man/man8
+  run $git_spend man --install
+  # no assertions for now (CI runs as root)
+}
+
 @test "Installing man pages requires sudo" {
   skip  # hehe, CI is root, I forgot ; coverage will lower, but that's OK
 
