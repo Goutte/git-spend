@@ -81,9 +81,13 @@ git spend sum --target <some git versioned project dir>
 > `2 days 1 hour 42 minutes`
 
 
+> ⛑ Use `git spend sum --help` or `man git-spend-sum` to see all the options.
+> Meanwhile, let's look at some available options, below.
+
+
 ### Format the output
 
-You can also get the spent time in a specific unit :
+You can get the spent time in a specific unit :
 
 ```
 git spend sum --minutes
@@ -239,13 +243,18 @@ go run main.go
 Build & Run & Install
 ---------------------
 
+The binaries in the releases are built by our [Continuous Integration](./.github/workflows/release.yml).
+
+Nevertheless, if you want to build your own `git-spend`, you can clone this project and run: 
+
 ```
 make
-make sum
 make install
 ```
 
-> `upx` is used to reduce the binary size in `make install-release`.
+> [`upx`] is used to reduce the binary size in `make install-release`.
+
+[`upx`]: https://upx.github.io/
 
 
 ### Build for other platforms
