@@ -271,8 +271,9 @@ To list available targets (`os`/`arch`), you can run:
 go tool dist list
 ```
 
-> There's an example in the `Makefile`, with the recipe `make build-windows-amd64`.
+> There's an example in the [`Makefile`], with the recipe `make build-windows-amd64`.
 
+[`Makefile`]: ./Makefile
 
 Contribute
 ----------
@@ -294,8 +295,10 @@ To add another language, add a new file, some sugar, some water, and … _voilà
 - [ ] `git-spend sum --short` → `1d3h27m`
 - [ ] `git-spend chrono start` → start an internal chronometer
 - [ ] `git-spend chrono add` → add time to the chronometer
-- [ ] Support rewriting of `/spend chrono - 15m` in commit hooks
-- [ ] Support rewriting of `/spend <ref> - 15m` in commit hooks 🌟
+- [ ] Rewriting of `/spend chrono [± <duration>]` by commit hook
+- [ ] Rewriting of `/spend <ref> [± <duration>]` by commit hook 🌟
+- [ ] `git spend hook --install` to install git hooks for rewriting
+- [ ] `git spend hook --remove` to remove installed git hooks
 - [ ] `git-spend amend <duration>` → amend previous commit with `/spend <duration>`
 - [ ] `git-spend amend --add <duration>` → same but adds
 - [ ] `git-spend amend --subtract <duration>` → same but subtracts  (alias: `--sub` ?)
