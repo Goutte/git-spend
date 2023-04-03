@@ -16,6 +16,12 @@ Those are messages handled by Cobra, like the usage flag for `--help` and some t
 > A wise friend told me that no-one enjoys maintaining huge and complex bash scripts.
 > So I'm undecided, for now ; I'll let _you_ be the judge.
 
+### Golang v1.20 and upwards
+
+Golang `1.20` introduces new tools for:
+- code coverage _(we use those a lot already)_
+- i18n _(same)_
+
 
 ## Manpages
 

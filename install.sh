@@ -7,6 +7,11 @@
 #
 # Will ask for password, if you want no interaction pipe the curl into "sudo sh" instead.
 #
+# I've set this up with sh, but I have no objection against using bash instead at some point.
+# zsh is fine too, but perhaps has less support out of the box.
+#
+# Overview
+# --------
 # 1. Detect OS & ARCH
 # 2. Download the appropriate binary
 # 3. Install that binary
@@ -44,7 +49,7 @@ echo "All done !"
 echo ""
 echo "You can now use:"
 echo "    git spend sum"
-echo "in git projects where you have /spend directives in commits."
+echo "in git projects where you have '/spend <duration>' directives in commits."
 echo ""
 echo "PLEASE MAKE SURE THIS SOFTWARE IS NOT USED TO OPPRESS"
 echo "AS IT WOULD BE AGAINST ITS LICENCE -- #CodersUnion"
