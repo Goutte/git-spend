@@ -393,15 +393,14 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_output --partial 'permission denied'
 }
 
-@test "Generating man pages fr" {
-  export LANGUAGE=fr
-  run $git_spend man --output /usr/local/share/man/man8
-  run $git_spend man --install
-  exit 1
-}
-
 @test "Rewrite /spend HEAD" {
   skip  # wip
+
+  # 1. Install the hooks
+
+  run $git_spend hook --install
+
+  # 2.a. Add a commit, but pretend it was 5 minutes ago
 
   touch some_new_file && git add some_new_file
   minutes_ago=$(date -d "-5minutes" --iso-8601=minutes)
@@ -409,20 +408,28 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 
 /spend 7m'
 
+  # 2.b. Check that adding that commit went well
+
   run $git_spend sum --since HEAD~1 --minutes
   assert_success
   assert_output '7'
+
+  run git log HEAD~1..HEAD
+  assert_success
+  assert_output --partial '/spend 7m'
+
+  # 3.a. Add another commit, this time using "/spend HEAD"
 
   touch some_other_file && git add some_other_file
   git commit -vm 'test: another
 
 /spend HEAD'
 
+  # 3.b. Hopefully the rewrite hook did its job
+
   run git log HEAD~1..HEAD
   assert_success
   assert_output --partial '/spend 5m'
-
-
 }
 
 # ---
