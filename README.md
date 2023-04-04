@@ -291,6 +291,7 @@ To add another language, add a new file, some sugar, some water, and … _voilà
 > If you don't like any of these, please voice your concerns as early as possible.
 
 - [x] `curl install.sh | sudo sh` _(ongoing, wider support needed)_
+- [x] i18n _(ongoing, [cobra forked](https://github.com/Goutte/cobra/tree/feat-i18n))_
 - [ ] `git-spend sum --format <custom format>`
 - [ ] `git-spend sum --short` → `1d3h27m`
 - [ ] `git-spend chrono start` → start an internal chronometer
@@ -304,5 +305,4 @@ To add another language, add a new file, some sugar, some water, and … _voilà
 - [ ] `git-spend amend --subtract <duration>` → same but subtracts  (alias: `--sub` ?)
 - [ ] docker _(`docker run git-spend` -- awkward? ; would need a volume)_
 - [ ] flatpak perhaps (road blocked, see [`packaging/`](./packaging))
-- [x] i18n _(ongoing)_ ([blocked upstream](https://github.com/spf13/cobra/issues/719))
 - [ ] Right-To-Left _(ساعد)_

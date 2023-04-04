@@ -374,7 +374,7 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
 @test "Generating man pages" {
   run $git_spend man --output /usr/local/share/man/man8
   run $git_spend man --install
-  # no assertions for now (CI runs as root)
+  # no assertions for now (CI runs root-like)
 }
 
 @test "Installing man pages requires sudo" {
@@ -391,6 +391,38 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   run $git_spend man --install
   assert_failure
   assert_output --partial 'permission denied'
+}
+
+@test "Generating man pages fr" {
+  export LANGUAGE=fr
+  run $git_spend man --output /usr/local/share/man/man8
+  run $git_spend man --install
+  exit 1
+}
+
+@test "Rewrite /spend HEAD" {
+  skip  # wip
+
+  touch some_new_file && git add some_new_file
+  minutes_ago=$(date -d "-5minutes" --iso-8601=minutes)
+  git commit --date "$minutes_ago" -vm 'test
+
+/spend 7m'
+
+  run $git_spend sum --since HEAD~1 --minutes
+  assert_success
+  assert_output '7'
+
+  touch some_other_file && git add some_other_file
+  git commit -vm 'test: another
+
+/spend HEAD'
+
+  run git log HEAD~1..HEAD
+  assert_success
+  assert_output --partial '/spend 5m'
+
+
 }
 
 # ---
