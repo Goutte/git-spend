@@ -1,7 +1,7 @@
 package guesser
 
 import (
-	"fmt"
+	"golang.org/x/text/language"
 	"os"
 )
 
@@ -15,13 +15,27 @@ var envVariablesHoldingLocale = []string{
 	"LANG",
 }
 
-func GuessLocaleFromEnv() (string, error) {
+func DetectLanguages(defaultLanguage language.Tag) []string {
+	var detectedLangs []string
 	for _, envKey := range envVariablesHoldingLocale {
 		lang := os.Getenv(envKey)
 		if lang != "" {
-			return lang, nil
+			detectedLang := language.Make(lang)
+			appendLang(&detectedLangs, detectedLang)
 		}
 	}
+	appendLang(&detectedLangs, defaultLanguage)
 
-	return "", fmt.Errorf("cannot guess locale")
+	return detectedLangs
+}
+
+func appendLang(langs *[]string, lang language.Tag) {
+	langString := lang.String()
+	*langs = append(*langs, langString)
+
+	langBase, confidentInBase := lang.Base()
+	if confidentInBase != language.No {
+		*langs = append(*langs, langBase.String())
+		*langs = append(*langs, langBase.ISO3())
+	}
 }
