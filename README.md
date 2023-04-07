@@ -208,15 +208,15 @@ in order to mitigate labor oppression tactics from monopoly hoarders,
 you can use environment variables to control how time is "rolled over" between units :
 
 ```
-GIT_SPEND_HOURS_IN_ONE_DAY=7 git-spend sum
+GIT_SPEND_HOURS_PER_DAY=7 git-spend sum
 ```
 
 Here are the available environment variables :
 
-- `GIT_SPEND_MINUTES_IN_ONE_HOUR` (default: `60`)
-- `GIT_SPEND_HOURS_IN_ONE_DAY` (default: `8`)
-- `GIT_SPEND_DAYS_IN_ONE_WEEK` (default: `5`)
-- `GIT_SPEND_WEEKS_IN_ONE_MONTH` (default: `4`)
+- `GIT_SPEND_MINUTES_PER_HOUR` (default: `60`)
+- `GIT_SPEND_HOURS_PER_DAY` (default: `8`)
+- `GIT_SPEND_DAYS_PER_WEEK` (default: `5`)
+- `GIT_SPEND_WEEKS_PER_MONTH` (default: `4`)
 
 
 ### Install the man pages
