@@ -43,10 +43,11 @@ func initConfig() {
 	//	viper.SetConfigFile(configFileFlag)
 	//} else {
 	home, err := os.UserHomeDir()
-	cobra.CheckErr(err)
-	viper.AddConfigPath(home)
-	viper.SetConfigType("yaml")
-	viper.SetConfigName(".git-spend")
+	if err != nil {
+		viper.AddConfigPath(home)
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(".git-spend")
+	}
 	//}
 
 	viper.SetEnvPrefix("git_spend")
