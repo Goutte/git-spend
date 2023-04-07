@@ -289,6 +289,20 @@ TMP_FIXTURE_DIR="/tmp/git-spend-fixture"
   assert_failure
 }
 
+@test "Support for GIT_SPEND_MINUTES_IN_ONE_HOUR" {
+  export GIT_SPEND_MINUTES_IN_ONE_HOUR=10
+  run $git_spend sum --since HEAD~1 --minutes
+  assert_success
+  assert_output "20"  # instead of 120 (converted from 2h)
+}
+
+@test "Support for alias GIT_SPEND_MINUTES_PER_HOUR" {
+  export GIT_SPEND_MINUTES_PER_HOUR=30
+  run $git_spend sum --since HEAD~1 --minutes
+  assert_success
+  assert_output "60"  # instead of 120 (converted from 2h)
+}
+
 @test "LANGUAGE=fr_FR git-spend" {
   export LANGUAGE=fr_FR
   run $git_spend

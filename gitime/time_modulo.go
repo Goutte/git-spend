@@ -36,11 +36,22 @@ var (
 
 // UpdateTimeModuloConfiguration must be ran AFTER viper has loaded the config file and env
 func UpdateTimeModuloConfiguration() {
-	MinutesInOneHour = viper.GetFloat64("minutes_in_one_hour")
-	HoursInOneDay = viper.GetFloat64("hours_in_one_day")
-	DaysInOneWeek = viper.GetFloat64("days_in_one_week")
-	WeeksInOneMonth = viper.GetFloat64("weeks_in_one_month")
+	MinutesInOneHour = getConfigFloat([]string{"minutes_per_hour", "minutes_in_one_hour"}, DefaultMinutesInOneHour)
+	HoursInOneDay = getConfigFloat([]string{"hours_per_day", "hours_in_one_day"}, DefaultHoursInOneDay)
+	DaysInOneWeek = getConfigFloat([]string{"days_per_week", "days_in_one_week"}, DefaultDaysInOneWeek)
+	WeeksInOneMonth = getConfigFloat([]string{"weeks_per_month", "weeks_in_one_month"}, DefaultWeeksInOneMonth)
 	refreshCompoundConversions()
+}
+
+func getConfigFloat(keys []string, defaultValue float64) float64 {
+	for _, key := range keys {
+		val := viper.GetFloat64(key)
+		if val != defaultValue {
+			return val
+		}
+	}
+
+	return defaultValue
 }
 
 func refreshCompoundConversions() {
@@ -52,7 +63,15 @@ func refreshCompoundConversions() {
 func init() {
 	refreshCompoundConversions()
 	viper.SetDefault("minutes_in_one_hour", DefaultMinutesInOneHour)
+	viper.SetDefault("minutes_per_hour", DefaultMinutesInOneHour)
 	viper.SetDefault("hours_in_one_day", DefaultHoursInOneDay)
+	viper.SetDefault("hours_per_day", DefaultHoursInOneDay)
 	viper.SetDefault("days_in_one_week", DefaultDaysInOneWeek)
+	viper.SetDefault("days_per_week", DefaultDaysInOneWeek)
 	viper.SetDefault("weeks_in_one_month", DefaultWeeksInOneMonth)
+	viper.SetDefault("weeks_per_month", DefaultWeeksInOneMonth)
+	//viper.RegisterAlias("minutes_per_hour", "minutes_in_one_hour")
+	//viper.RegisterAlias("hours_per_day", "hours_in_one_day")
+	//viper.RegisterAlias("days_per_week", "days_in_one_week")
+	//viper.RegisterAlias("weeks_per_month", "weeks_in_one_month")
 }
