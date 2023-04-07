@@ -25,7 +25,11 @@ func Execute() error {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	// If we want the generated help to show correct defaults, we need this BEFORE cobra inits
+	initConfig()
+
+	// We will need to use a listener like so when we'll use a flag for the config file
+	//cobra.OnInitialize(initCobra)
 
 	// Might use a config file as well at some point for things like DaysInOneWeek
 	//rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is $HOME/.git-spend.yaml)")
@@ -33,14 +37,13 @@ func init() {
 	// Snippets for viper config
 	//rootCmd.PersistentFlags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
 	//viper.BindPFlag("author", rootCmd.PersistentFlags().Lookup("author"))
-	//viper.SetDefault("author", "NAME HERE <EMAIL ADDRESS>")
 }
 
 func initConfig() {
 	// Later on we'll want users to be able to override the config file
 	// But first we need to figure out how to generate a "template" for that config file.
-	//if configFileFlag != "" {
-	//	viper.SetConfigFile(configFileFlag)
+	//if configFile != "" {
+	//	viper.SetConfigFile(configFile)
 	//} else {
 	home, err := os.UserHomeDir()
 	if err != nil {
