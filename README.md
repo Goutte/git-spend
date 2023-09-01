@@ -160,6 +160,8 @@ Download
 You can [⮋ download the binary](https://github.com/Goutte/git-spend/releases/latest/download/git-spend) straight from the [latest build in the releases](https://github.com/Goutte/git-spend/releases),
 and move it anywhere in your `$PATH`, such as `/usr/local/bin/git-spend` for example.
 
+> ⚠ Remember to enable the execution bit with `chmod u+x ./git-spend`, for example.
+
 There is an _experimental_ install script that does exactly this, plus `man` pages generation:
 
     curl https://raw.githubusercontent.com/Goutte/git-spend/main/install.sh | sh
