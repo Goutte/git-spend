@@ -1,0 +1,255 @@
+From: "Antoine Goutenoir" <antoine@goutenoir.com>
+To: submit@bugs.debian.org
+Subject: ITP: git-spend -- Sum the time-tracking "/spend" commands of git commit messages.
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Debbugs-CC: debian-devel@lists.debian.org, debian-go@lists.debian.org
+
+Package: git-spend
+Severity: wishlist
+Owner: "Antoine Goutenoir" <antoine@goutenoir.com>
+
+* Package name    : git-spend
+  Version         : 1.2.0-1
+  Upstream Author : Antoine Goutenoir
+* URL             : https://github.com/Goutte/git-spend
+* License         : MIT
+  Programming Lang: Go
+  Description     : Sum the time-tracking "/spend" commands of git commit messages.
+
+ git-spend : time tracker using git commit message commands
+ .
+ Purpose
+ .
+ Collect, addition and return all the /spend and /spent time-tracking
+ directives in git commit messages.
+ .
+  | This looks at the git log of the currently checked out branch of the
+  | working directory,
+  | and therefore requires git to be installed on your system.
+ .
+ By Example
+ .
+ Say you are in the directory of a project with one commit like so :
+ .
+   feat(crunch): implement a nice feature
+ .
+   Careful, it's still sharp.
+   /spend 10h30
+ .
+ Running:
+ .
+   $ git spend sum
+ .
+ would yield:
+ .
+  | 1 day 2 hours 30 minutes
+ .
+ Of course, *git-spend* really shines when you have multiple commits with
+ /spend commands that you want to tally and sum.
+ .
+  | 💡 You can use git-spend sum or git spend sum, they are equivalent.
+ .
+ Specifications
+ .
+ We assume 8 hours per day, 5 days per week, 4 weeks per month. *(like
+ Gitlab does)* These can be configured at runtime if needed, using
+ environment variables.
+ .
+ The **complete specification** can be found in the rules
+ (/gitime/gitime_test_data.yaml) of the test data, and in excruciating
+ detail in the grammar (/gitime/grammar.go).
+ .
+ The acceptance testing suite (/test/features.bats) also holds many usage
+ examples.
+ .
+ Usage
+ .
+ Go into your git-versioned project's directory:
+ .
+   cd <some git versioned project with commits using /spend directives>
+ .
+ and run:
+ .
+   git spend sum
+ .
+  | 2 days 1 hour 42 minutes
+ .
+ Or run git-spend from anywhere, but specify the --target directory (which
+ defaults to .):
+ .
+   git spend sum --target <some git versioned project dir>
+ .
+  | 2 days 1 hour 42 minutes
+ .
+  | ⛑ Use git spend sum --help or man git-spend-sum to see all the options.
+  | Meanwhile, let's look at some available options, below.
+ .
+ Format the output
+ .
+ You can get the spent time in a specific unit :
+ .
+   git spend sum --minutes
+   git spend sum --hours
+   git spend sum --days
+ .
+  | These values will always be rounded to integers, for convenience,
+  | although *git-spend* does understand floating point numbers in /spend
+  | directives.
+ .
+ Filter by commit authors
+ .
+ You can track the time of specified authors only, by name or email :
+ .
+   git spend sum --author Alice --author bob@email.net
+ .
+ Exclude merge commits
+ .
+ You can also exclude merge commits :
+ .
+   git spend sum --no-merges
+ .
+ Restrict to a range of commits
+ .
+ You can restrict to a range of commits, using a commit hash, a tag, or
+ even HEAD~N.
+ .
+   git spend sum --since <ref> --until <ref>
+ .
+ For example, to get the time spent on the last 15 commits :
+ .
+   git spend sum --since HEAD~15
+ .
+ Or the time spent on a tag since previous tag :
+ .
+   git spend sum --since 0.1.0 --until 0.1.1
+ .
+ You can also use *dates* and *datetimes*, but remember to quote them if
+ you specify the time:
+ .
+   git spend sum --since 2023-03-21
+   git spend sum --since "2023-03-21 13:37:00"
+ .
+  | 📅 Other supported time formats: RFC3339 (https://www.rfc-
+  | editor.org/rfc/rfc3339), RFC822
+ (https://www.w3.org/Protocols/rfc822/),
+  | RFC850 (https://www.rfc-editor.org/rfc/rfc850).
+  | If you need a specific timezone, try setting the TZ environment
+  | variable:
+  | TZ="Europe/Paris" git-spend sum --since 2023-03-21
+ .
+ Download
+ .
+ Direct download
+ .
+ You can ⮋ download the binary (https://github.com/Goutte/git-
+ spend/releases/latest/download/git-spend) straight from the latest build
+ in the releases (https://github.com/Goutte/git-spend/releases), and move
+ it anywhere in your $PATH, such as /usr/local/bin/git-spend for example.
+ .
+  | ⚠ Remember to enable the execution bit with chmod u+x ./git-spend, for
+  | example.
+ .
+ There is an *experimental* install script that does exactly this, plus
+ man pages generation:
+ .
+   curl https://raw.githubusercontent.com/Goutte/git-spend/main/install.sh
+ | sh
+ .
+  | 🐧 This script only works for linux/amd64, for now.   *Stigmergy?*
+ .
+ Via go get
+ .
+ You can also install via go get (hopefully) :
+ .
+   go get -u github.com/goutte/git-spend
+ .
+ or go install:
+ .
+   go install github.com/goutte/git-spend
+ .
+  | If that fails, you can install by cloning and running make install.
+ .
+ Advanced Usage
+ .
+ Read from standard input
+ .
+ You can also directly parse messages from stdin instead of attempting to
+ read the git log:
+ .
+   git log > git.log
+   cat git.log | git-spend sum --stdin
+ .
+  | git spend ignores standard input otherwise.
+ .
+ Configure the time modulo
+ .
+ If you live somewhere where work hours per week are limited (to 35 for
+ example) in order to mitigate labor oppression tactics from monopoly
+ hoarders, you can use environment variables to control how time is
+ "rolled over" between units :
+ .
+   GIT_SPEND_HOURS_IN_ONE_DAY=7 git-spend sum
+ .
+ Here are the available environment variables :
+ .
+  * GIT_SPEND_MINUTES_IN_ONE_HOUR (default: 60)
+  * GIT_SPEND_HOURS_IN_ONE_DAY (default: 8)
+  * GIT_SPEND_DAYS_IN_ONE_WEEK (default: 5)
+  * GIT_SPEND_WEEKS_IN_ONE_MONTH (default: 4)
+ .
+ Install the man pages
+ .
+ If you installed via direct download, you might want to install the man
+ pages:
+ .
+   sudo git spend man --install
+ .
+  | git help spend will then work as expected.
+ .
+ Develop
+ .
+   git clone https://github.com/Goutte/git-spend.git
+   cd git-spend
+   go get
+   go run main.go
+ .
+ Build & Run & Install
+ .
+ The binaries in the releases are built by our Continuous Integration
+ (/.github/workflows/release.yml).
+ .
+ Nevertheless, if you want to build your own git-spend, you can clone this
+ project and run:
+ .
+   make
+   make install
+ .
+  | upx (https://upx.github.io/) is used to reduce the binary size in
+ make
+  | install-release.
+ .
+ Build for other platforms
+ .
+ You may use the GOOS and GOARCH environment variables to control the
+ build targets:
+ .
+   GOOS=<target-OS> GOARCH=<target-architecture> go build -o build/git-spend
+ .
+ .
+ To list available targets (os/arch), you can run:
+ .
+   go tool dist list
+ .
+  | There's an example in the Makefile (/Makefile), with the recipe make
+  | build-windows-amd64.
+ .
+ Contribute
+ .
+ Merge requests are welcome.  Make sure you record the time you /spend in
+ your commit messages.  :)
+ .
+ Translations
+ .
+ Translations files are in locale/*.toml. To add another language, add a
+ new file, some sugar, some water, and … *voilà !*
