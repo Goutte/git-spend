@@ -1,22 +1,25 @@
-From: "Antoine Goutenoir" <antoine@goutenoir.com>
-To: submit@bugs.debian.org
-Subject: ITP: git-spend -- Sum the time-tracking /spend commands of git commit messages.
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Debbugs-CC: debian-devel@lists.debian.org, debian-go@lists.debian.org
+Source: git-spend
+Maintainer: Debian Go Packaging Team <team+pkg-go@tracker.debian.org>
+Uploaders: "Antoine Goutenoir" <antoine@goutenoir.com>
+Section: golang
+Testsuite: autopkgtest-pkg-go
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               dh-golang,
+               golang-any
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/go-team/packages/git-spend
+Vcs-Git: https://salsa.debian.org/go-team/packages/git-spend.git
+Homepage: https://github.com/Goutte/git-spend
+Rules-Requires-Root: no
+XS-Go-Import-Path: github.com/Goutte/git-spend
 
-Package: wnpp
-Severity: wishlist
-Owner: "Antoine Goutenoir" <antoine@goutenoir.com>
-
-* Package name    : git-spend
-  Version         : 1.2.0-1
-  Upstream Author : Antoine Goutenoir
-* URL             : https://github.com/Goutte/git-spend
-* License         : MIT
-  Programming Lang: Go
-  Description     : Sum the time-tracking "/spend" commands of git commit messages.
-
+Package: git-spend
+Architecture: any
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Built-Using: ${misc:Built-Using}
+Description: Sum the time-tracking "/spend" commands of git commit messages. (program)
  git-spend : time tracker using git commit message commands
  .
  Purpose
@@ -206,40 +209,4 @@ Owner: "Antoine Goutenoir" <antoine@goutenoir.com>
    sudo git spend man --install
  .
   | git help spend will then work as expected.
- .
- Develop
- .
-   git clone https://github.com/Goutte/git-spend.git
-   cd git-spend
-   go get
-   go run main.go
- .
- Build & Run & Install
- .
- The binaries in the releases are built by our Continuous Integration
- (/.github/workflows/release.yml).
- .
- Nevertheless, if you want to build your own git-spend, you can clone this
- project and run:
- .
-   make
-   make install
- .
-  | upx (https://upx.github.io/) is used to reduce the binary size in
- make
-  | install-release.
- .
- Build for other platforms
- .
- You may use the GOOS and GOARCH environment variables to control the
- build targets:
- .
-   GOOS=<target-OS> GOARCH=<target-architecture> go build -o build/git-spend
- .
- .
- To list available targets (os/arch), you can run:
- .
-   go tool dist list
- .
-  | There's an example in the Makefile (/Makefile), with the recipe make
-  | build-windows-amd64.
+
