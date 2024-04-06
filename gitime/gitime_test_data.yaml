@@ -128,6 +128,12 @@ collect:
     expected:
       minutes: 60
 
+  - rule: Allow alias /spent (/spent 0.5h)
+    message: |
+      /spent 0.5h
+    expected:
+      minutes: 30
+
   - rule: Allow full units (/spend 1 hour 10 minutes)
     message: |
       /spend 1 hour 10 minutes
@@ -200,6 +206,11 @@ collect:
       /spend 2h working like a donkey
     expected:
       minutes: 120
+
+  - rule: Handle Windows carriage returns as newlines
+    message: "style: main menu fixed\r/spent 0.5h"
+    expected:
+      minutes: 30
 
   - rule: Tolerate missing space typo (/spend3h)
     message: |

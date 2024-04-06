@@ -32,8 +32,14 @@ func ReadGitLog(onlyAuthors []string, excludeMerge bool, since string, until str
 			continue
 		}
 
-		s += commit.Subject + "\n"
-		s += commit.Body + "\n"
+		// We read from the raw body because some newlines are eaten when separating subject an body.
+		// My non-tech friend commits without separating subject and body, like this:
+		//   > style: something amazing
+		//   > /spent 0.5h
+		// … and the "/spend 0.5h" ends up at the end of the Subject, without newline.
+		s += commit.RawBody + "\n"
+		// We also read from the note, and it might or might not be correct.
+		s += commit.Note + "\n"
 	}
 
 	return s

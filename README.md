@@ -234,6 +234,8 @@ sudo git spend man --install
 Develop
 -------
 
+First, you'll need to [install Golang](https://go.dev/dl/).
+
 ```
 git clone https://github.com/Goutte/git-spend.git
 cd git-spend
@@ -257,6 +259,10 @@ make install
 > [`upx`] is used to reduce the binary size in `make install-release`.
 
 [`upx`]: https://upx.github.io/
+
+---
+
+You can compare the checksums, and they should be the same unless microsoft is being naughty.
 
 
 ### Build for other platforms

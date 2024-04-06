@@ -15,6 +15,8 @@ require (
 
 replace github.com/spf13/cobra => github.com/Goutte/cobra v0.0.0-20230404093907-b279579671a9
 
+replace github.com/tsuyoshiwada/go-gitlog => github.com/Goutte/go-gitlog v0.0.0-20240406102306-1efcfa30a305
+
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -31,6 +33,8 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
-	golang.org/x/sys v0.3.0 // indirect
+	github.com/tsuyoshiwada/go-gitcmd v0.0.0-20180205145712-5f1f5f9475df // indirect
+	golang.org/x/sys v0.19.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
