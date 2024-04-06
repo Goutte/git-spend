@@ -2,7 +2,7 @@ package gitime
 
 import "regexp"
 
-var commandRegex = "/spen[dt]\\s*:?\\s*"
+var commandRegex = "^\\s*/spen[dt]\\s*:?\\s*"
 var floatRegex = "[0-9]+[.]?[0-9]*|[0-9]*[.]?[0-9]+"
 
 // no negative lookahead in regexp, so we hack around it (to ignore datetime suffix)

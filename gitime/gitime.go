@@ -17,6 +17,7 @@ var expressions = []*regexp.Regexp{
 // If no time unit is specified, minutes are assumed.
 func CollectTimeSpent(message string) *TimeSpent {
 	ts := &TimeSpent{}
+	message = strings.ReplaceAll(message, "\r", "\n")
 	lines := strings.Split(message, "\n")
 
 	for _, line := range lines {
